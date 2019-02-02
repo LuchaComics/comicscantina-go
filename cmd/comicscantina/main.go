@@ -22,23 +22,31 @@ func init() {
 func main() {
 	r := chi.NewRouter()
 
-	// Load up our global middleware.
+    //--------------------------------//
+	// Load up our global middleware. //
+	//--------------------------------//
     r.Use(middleware.RequestID)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.URLFormat)
 	r.Use(render.SetContentType(render.ContentTypeJSON))
 
-    // Load up our non-protected API endpoints. The following API endpoints
-	// can be accessed regardless of whether a JWT token was provided or not.
+    //------------------------------------------------------------------------//
+    // Load up our non-protected API endpoints. The following API endpoints   //
+	// can be accessed regardless of whether a JWT token was provided or not. //
+	//------------------------------------------------------------------------//
     r.Get("/", controller.HealthCheckFunc)
 	r.Post("/api/v1/public/register", controller.RegisterFunc)
     r.Post("/api/v1/public/login", controller.LoginFunc)
-    // r.Post("/api/v1/public/organizations", controller.ListPublicOrganizationsFunc)
 
-	// Load up our protected API endpoints. The following API endpoints can only
-	// be accessed with submission of a JWT token in the header.
+    //------------------------------------------------------------------------//
+	// Load up our protected API endpoints. The following API endpoints can   //
+	// only be accessed with submission of a JWT token in the header.         //
+	//------------------------------------------------------------------------//
 	r.Group(func(r chi.Router) {
+		//--------------------------------------------------------------------//
+		//                             Middleware                             //
+		//--------------------------------------------------------------------//
 		// Seek, verify and validate JWT tokens
 		r.Use(jwtauth.Verifier(service.GetJWTTokenAuthority()))
 
@@ -52,7 +60,9 @@ func main() {
 		// lookup the verified JWT token and attach as a context to the request.
 		r.Use(cc_middleware.ProfileCtx)
 
-		// API endpoints.
+		//--------------------------------------------------------------------//
+		//                           API endpoints                            //
+		//--------------------------------------------------------------------//
 		r.Get("/api/v1/profile", controller.ProfileRetrieveFunc)
 		r.With(cc_middleware.PaginationCtx).Get("/api/v1/organizations", controller.ListOrganizationsFunc)
 		r.Post("/api/v1/organizations", controller.CreateOrganizationFunc)
