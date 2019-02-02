@@ -20,7 +20,7 @@ import (
 type StoreDetailRequest struct {
     Name                string `json:"name"; form:"name";`
     Description         string `json:"description,omitempty"; form:"description";`
-    // OrganizationID      uint64 `json:"organization_id,omitempty"`
+    OrganizationID      uint64 `json:"organization_id,omitempty"`
     Email               string `json:"email"; form:"email";`
     StreetAddress       string `json:"street_address"; form:"street_address";`
     StreetAddressExtra  string `json:"street_address_extra"; form:"street_address_extra";`
