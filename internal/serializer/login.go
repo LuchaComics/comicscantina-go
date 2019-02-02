@@ -4,7 +4,7 @@ import (
     "errors"
     "net/http"
     "github.com/luchacomics/comicscantina-go/internal/base/service"
-    "github.com/luchacomics/comicscantina-go/internal/model_resource"
+    "github.com/luchacomics/comicscantina-go/internal/model_manager"
 )
 
 // Input payload.
@@ -19,8 +19,8 @@ func (data *LoginRequest) Bind(r *http.Request) error {
         return errors.New("Missing email.")
     }
     // Check to see if the user exists in the database.
-    user, count := model_resource.DBLookupUserByEmail(data.Email)
-    if count <= 0 {
+    user, count := model_manager.UserManagerInstance().GetByEmail(data.Email)
+    if count == 0 {
         return errors.New("Email or password is incorrect. (1)")
     }
     if data.Password == "" {

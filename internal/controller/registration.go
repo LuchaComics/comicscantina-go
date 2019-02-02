@@ -5,7 +5,7 @@ import (
     // "errors"
     "net/http"
     "github.com/go-chi/render"
-    "github.com/luchacomics/comicscantina-go/internal/model_resource"
+    "github.com/luchacomics/comicscantina-go/internal/model_manager"
     "github.com/luchacomics/comicscantina-go/internal/serializer"
     "github.com/luchacomics/comicscantina-go/internal/base/service"
 )
@@ -20,7 +20,7 @@ func RegisterFunc(w http.ResponseWriter, r *http.Request) {
 	}
 
     // Create our user model in our database.
-    user, _ := model_resource.DBNewUser(data.Email, data.Password, data.FirstName, data.LastName)
+    user, _ := model_manager.UserManagerInstance().Create(data.Email, data.Password, data.FirstName, data.LastName)
 
     // Create the users authentication token.
     tokenString := service.GenerateJWTToken(user.ID)

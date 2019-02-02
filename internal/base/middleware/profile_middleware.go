@@ -3,7 +3,7 @@ package middleware
 import (
     "context"
 	"net/http"
-    "github.com/luchacomics/comicscantina-go/internal/model_resource"
+    "github.com/luchacomics/comicscantina-go/internal/model_manager"
 	"github.com/luchacomics/comicscantina-go/internal/base/service"
 )
 
@@ -14,7 +14,7 @@ func ProfileCtx(next http.Handler) http.Handler {
     		http.Error(w, "User ID not inputted.", http.StatusUnauthorized)
     		return
     	}
-        user, count := model_resource.DBLookupUserByID(user_id)
+        user, count := model_manager.UserManagerInstance().GetByID(user_id)
         if count == 0  {
     		http.Error(w, "No User found with ID.", http.StatusUnauthorized)
     		return

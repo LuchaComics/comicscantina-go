@@ -11,7 +11,7 @@ import (
     "github.com/luchacomics/comicscantina-go/internal/base/database"
     "github.com/luchacomics/comicscantina-go/internal/controller"
     "github.com/luchacomics/comicscantina-go/internal/serializer"
-    "github.com/luchacomics/comicscantina-go/internal/model_resource"
+    "github.com/luchacomics/comicscantina-go/internal/model_manager"
 )
 
 
@@ -21,7 +21,7 @@ func Test_LoginFunc(t *testing.T) {
     dao.DropAndCreateDatabase()
 
     // Setup our user object.
-    model_resource.DBNewUser("test@test.com", "123password", "Bob", "Joe")
+    model_manager.UserManagerInstance().Create("test@test.com", "123password", "Bob", "Joe")
 
     // Run our test.
     jsonString := &serializer.LoginRequest{

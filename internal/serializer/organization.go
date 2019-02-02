@@ -6,7 +6,7 @@ import (
     "net/http"
     "github.com/luchacomics/comicscantina-go/internal/base/database"
     "github.com/luchacomics/comicscantina-go/internal/model"
-    "github.com/luchacomics/comicscantina-go/internal/model_resource"
+    "github.com/luchacomics/comicscantina-go/internal/model_manager"
 )
 
 // OrganizationRequest is the request payload for Organization data model.
@@ -31,7 +31,7 @@ func (data *OrganizationRequest) Bind(r *http.Request) error {
     if data.Name == "" {
         return errors.New("Missing name.")
     }
-    _, count := model_resource.DBLookupOrganizationByName(data.Name)
+    _, count := model_manager.OrganizationManagerInstance().GetByName(data.Name)
     if count > 0 {
         return errors.New("Name is not unique.")
     }

@@ -4,7 +4,7 @@ import (
     // "errors"
     "net/http"
     "github.com/go-chi/render"
-    "github.com/luchacomics/comicscantina-go/internal/model_resource"
+    "github.com/luchacomics/comicscantina-go/internal/model_manager"
     "github.com/luchacomics/comicscantina-go/internal/serializer"
     "github.com/luchacomics/comicscantina-go/internal/base/service"
 )
@@ -20,7 +20,7 @@ func LoginFunc(w http.ResponseWriter, r *http.Request) {
 	}
 
     // Fetch our user object.
-    user, _ := model_resource.DBLookupUserByEmail(data.Email)
+    user, _ := model_manager.UserManagerInstance().GetByEmail(data.Email)
 
     // Create the users authentication token.
     tokenString := service.GenerateJWTToken(user.ID)

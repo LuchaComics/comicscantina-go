@@ -10,7 +10,7 @@ import (
     "github.com/luchacomics/comicscantina-go/internal/base/database"
     "github.com/luchacomics/comicscantina-go/internal/base/service"
     "github.com/luchacomics/comicscantina-go/internal/controller"
-    "github.com/luchacomics/comicscantina-go/internal/model_resource"
+    "github.com/luchacomics/comicscantina-go/internal/model_manager"
 )
 
 
@@ -20,7 +20,7 @@ func Test_ProfileFunc(t *testing.T) {
     dao.DropAndCreateDatabase()
 
     // Create our user account and generate our JWT token.
-    user, _ := model_resource.DBNewUser("bart@mikasoftware.com", "123password", "Bart", "Mika")
+    user, _ := model_manager.UserManagerInstance().Create("bart@mikasoftware.com", "123password", "Bart", "Mika")
     token := service.GenerateJWTToken(user.ID)
     bearer_token := "Bearer "+token
 

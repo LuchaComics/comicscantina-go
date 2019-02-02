@@ -3,7 +3,7 @@ package serializer
 import (
     "errors"
     "net/http"
-    "github.com/luchacomics/comicscantina-go/internal/model_resource"
+    "github.com/luchacomics/comicscantina-go/internal/model_manager"
 )
 
 // RegistrationRequest is the request payload for User data model.
@@ -26,7 +26,7 @@ func (data *RegistrationRequest) Bind(r *http.Request) error {
     if data.Email == "" {
         return errors.New("Missing email.")
     }
-    _, count := model_resource.DBLookupUserByEmail(data.Email)
+    _, count := model_manager.UserManagerInstance().GetByEmail(data.Email)
     if count > 0 {
         return errors.New("Email is not unique.")
     }
