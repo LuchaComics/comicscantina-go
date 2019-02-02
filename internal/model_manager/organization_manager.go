@@ -68,3 +68,37 @@ func (manager *OrganizationManager) AllByPageIndex(pageIndex uint64) ([]model.Or
 
     return organizations, pagination.TotalRecord
 }
+
+func (manager *OrganizationManager) UserIsMemberOf(userID uint64, orgID uint64) bool {
+    orm := manager.dao.GetORM() // Get our database layer.
+
+    // Declare the variables we will use for searching.
+    organization := model.Organization{}
+    users := []model.User{}
+    var count uint64
+
+    //--------------------------------------------------------------------------
+    // CASE 1 OF 2: Is user the OWNER of this Organization.
+    //--------------------------------------------------------------------------
+    orm.Where("owner_id = ? AND id = ?", userID, orgID).First(&organization).Count(&count)
+    if count > 0 {
+        return true
+    }
+
+    //--------------------------------------------------------------------------
+    // CASE 2 OF 2: Is the user an EMPLOYEE of this Organization.
+    //--------------------------------------------------------------------------
+    // Special thanks: https://stackoverflow.com/a/37982571
+    // (a) Select the Organization we want to look at.
+    orm.First(&organization, orgID)
+
+    // (b) Fetch all the employees that belong to the organization through
+    //     the "has many" relationship we setup.
+    orm.Model(&organization).Related(&users, "Employees")
+
+    // (c) Within the returned employees, confirm that the user with the
+    //     `userID` exists in this list of employees. Note: We are looking
+    //     to make sure we only count and not actually fetch the record.
+    orm.Model(&users).Where("id = ?", userID)
+    return len(users) > 0
+}

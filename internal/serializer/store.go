@@ -7,7 +7,7 @@ import (
     "github.com/go-chi/render"
     "github.com/luchacomics/comicscantina-go/internal/base/database"
     "github.com/luchacomics/comicscantina-go/internal/model"
-    // "github.com/luchacomics/comicscantina-go/internal/model_manager"
+    "github.com/luchacomics/comicscantina-go/internal/model_manager"
 )
 
 
@@ -36,14 +36,21 @@ type StoreDetailRequest struct {
 
 // Function will validate the input payload.
 func (data *StoreDetailRequest) Bind(r *http.Request) error {
+    // Extract the User model data object from the request object.
+    user := r.Context().Value("user").(*model.User)
+
     if data.Name == "" {
         return errors.New("Missing name.")
     }
     if data.OrganizationID == 0 {
         return errors.New("Missing organization_id.")
     }
-    // TODO: Check to see if this organization exists?
-    // TODO: Check to see if the authenticated user belongs to this organization.
+    // Check to see if this organization exists?
+    // Check to see if the authenticated user belongs to this organization.
+    has_membership := model_manager.OrganizationManagerInstance().UserIsMemberOf(user.ID, data.OrganizationID)
+    if has_membership == false {
+        return errors.New("organization_id is invalid - either does not exist or you are not a member of it.")
+    }
     if data.Email == "" {
         return errors.New("Missing email.")
     }
