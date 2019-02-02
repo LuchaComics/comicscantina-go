@@ -20,7 +20,7 @@ import (
 type StoreDetailRequest struct {
     Name                string `json:"name"; form:"name";`
     Description         string `json:"description,omitempty"; form:"description";`
-    OrganizationID      uint64 `json:"organization_id,omitempty"`
+    OrganizationID      uint64 `json:"organization_id,string,omitempty"`
     Email               string `json:"email"; form:"email";`
     StreetAddress       string `json:"street_address"; form:"street_address";`
     StreetAddressExtra  string `json:"street_address_extra"; form:"street_address_extra";`
@@ -39,9 +39,9 @@ func (data *StoreDetailRequest) Bind(r *http.Request) error {
     if data.Name == "" {
         return errors.New("Missing name.")
     }
-    // if data.OrganizationID == 0 {
-    //     return errors.New("Missing organization_id.")
-    // }
+    if data.OrganizationID == 0 {
+        return errors.New("Missing organization_id.")
+    }
     // TODO: Check to see if this organization exists?
     // TODO: Check to see if the authenticated user belongs to this organization.
     if data.Email == "" {
