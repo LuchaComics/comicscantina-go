@@ -48,7 +48,7 @@ func Instance() (*DataAcessObject) {
 
     // // Automatically delete previous database schema.
     // db.Debug().DropTableIfExists(&model.User{})
-    db.Debug().DropTableIfExists(&model.Organization{})
+    // db.Debug().DropTableIfExists(&model.Organization{})
 
     // Automatically migrate our database schema.
     db.Debug().AutoMigrate(&model.User{})

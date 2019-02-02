@@ -55,6 +55,7 @@ func main() {
 		r.Get("/api/v1/profile", controller.ProfileRetrieveFunc)
 		r.Get("/api/v1/organizations", controller.ListOrganizationsFunc)
 		r.Post("/api/v1/organizations", controller.CreateOrganizationFunc)
+		r.With(controller.OrganizationCtx).Get("/api/v1/organization/{organizationID}", controller.RetrieveOrganizationFunc)
 
 		// TODO:
 		// | /organizations      |

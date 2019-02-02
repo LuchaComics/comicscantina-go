@@ -52,13 +52,13 @@ func ListOrganizationsFunc(w http.ResponseWriter, r *http.Request) {
 
 func OrganizationCtx(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var organization *model.Organization
-
 		if organizationIDString := chi.URLParam(r, "organizationID"); organizationIDString != "" {
 			organizationID, _ := strconv.ParseUint(organizationIDString, 10, 64)
-			organization, _ = model_manager.OrganizationManagerInstance().GetByID(organizationID)
-            ctx := context.WithValue(r.Context(), "organization", organization)
-    		next.ServeHTTP(w, r.WithContext(ctx))
+			organization, count := model_manager.OrganizationManagerInstance().GetByID(organizationID)
+            if count == 1 {
+                ctx := context.WithValue(r.Context(), "organization", organization)
+        		next.ServeHTTP(w, r.WithContext(ctx))
+            }
 		}
         render.Render(w, r, serializer.ErrNotFound)
         return
