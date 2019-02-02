@@ -25,7 +25,6 @@ type Store struct {
     CreatedAt           time.Time
     UpdatedAt           time.Time
     OrganizationID      uint64 `gorm:"index;"`
-    Employees           []User `gorm:"foreignkey:EmployeeInStoreID;"`
     Products            []Product `gorm:"foreignkey:StoreID;"`
 }
 

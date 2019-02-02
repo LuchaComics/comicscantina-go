@@ -29,6 +29,7 @@ type Organization struct {
     Twitter             string `gorm:"size:255;"`
     YouTube             string `gorm:"size:255;"`
     Google              string `gorm:"size:255;"`
+    Employees           []User `gorm:"foreignkey:OrganizationID;"`
     Stores              []Store `gorm:"foreignkey:OrganizationID;"`
     Products            []Product `gorm:"foreignkey:OrganizationID;"`
 }

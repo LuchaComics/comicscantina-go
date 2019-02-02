@@ -12,7 +12,8 @@ type User struct {
     FirstName         string `gorm:"type:varchar(127)”`
     LastName          string `gorm:"type:varchar(127)”`
     Organizations     []Organization `gorm:"foreignkey:OwnerID"`
-    EmployeeInStoreID uint64 `gorm:"index"`
+    OrganizationID    uint64 `gorm:"index;"`
+    Receipts          []Receipt `gorm:"foreignkey:OwnerID"`
 }
 
 // Give custom table name in our database.
