@@ -7,6 +7,7 @@ import (
     "github.com/luchacomics/comicscantina-go/internal/model_resource"
 )
 
+// Input payload.
 type LoginRequest struct {
     Email string `json:"email" form:"email"`
     Password string `json:"password" form:"password"`
@@ -33,6 +34,7 @@ func (data *LoginRequest) Bind(r *http.Request) error {
 	return nil
 }
 
+// Output payload.
 type LoginResponse struct {
     TokenString string `json:"token" form:"string"`
     UserID uint64 `json:"user_id,omitempty" form:"int"`
@@ -41,6 +43,7 @@ type LoginResponse struct {
     LastName string `json:"last_name,omitempty"`
 }
 
+// Function will create our output payload.
 func NewLoginResponse(tokenString string, userID uint64, email string, firstName string, lastName string) *LoginResponse {
 	resp := &LoginResponse{
         TokenString: tokenString,

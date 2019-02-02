@@ -6,7 +6,7 @@ import (
     "github.com/luchacomics/comicscantina-go/internal/model_resource"
 )
 
-
+// OrganizationRequest is the request payload for Organization data model.
 type OrganizationRequest struct {
     Name                string `json:"name"; form:"name";`
     Description         string `json:"description,omitempty"; form:"description";`
@@ -52,6 +52,7 @@ func (data *OrganizationRequest) Bind(r *http.Request) error {
 	return nil
 }
 
+// OrganizationResponse is the response payload for Organization data model.
 type OrganizationResponse struct {
     ID uint64 `json:"id,omitempty" form:"int"`
     Name string `json:"name,omitempty"`
@@ -60,6 +61,7 @@ type OrganizationResponse struct {
     OwnerID uint64 `json:"owner_id,omitempty" form:"int"`
 }
 
+// Function will create our output payload.
 func NewOrganizationResponse(id uint64, name string, description string, email string, userID uint64) *OrganizationResponse {
 	resp := &OrganizationResponse{
         ID: id,

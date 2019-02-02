@@ -5,6 +5,7 @@ import (
 )
 
 
+// ProfileResponse is the response payload for User data model.
 type ProfileResponse struct {
     UserID uint64 `json:"user_id,omitempty" form:"int"`
     Email string `json:"email" form:"email"`
@@ -12,6 +13,8 @@ type ProfileResponse struct {
     LastName string `json:"last_name,omitempty"`
 }
 
+
+// Function will create our output payload.
 func NewProfileResponse(userID uint64, email string, firstName string, lastName string) *ProfileResponse {
 	resp := &ProfileResponse{
         UserID: userID,

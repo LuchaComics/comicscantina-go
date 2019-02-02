@@ -42,6 +42,7 @@ func (data *RegistrationRequest) Bind(r *http.Request) error {
 	return nil
 }
 
+// RegistrationResponse is the output payload for the API endpoint.
 type RegistrationResponse struct {
     TokenString string `json:"token" form:"string"`
     UserID uint64 `json:"user_id,omitempty" form:"int"`
@@ -50,6 +51,7 @@ type RegistrationResponse struct {
     LastName string `json:"last_name,omitempty"`
 }
 
+// Function will create our output payload.
 func NewRegistrationResponse(tokenString string, userID uint64, email string, firstName string, lastName string) *RegistrationResponse {
 	resp := &RegistrationResponse{
         TokenString: tokenString,
