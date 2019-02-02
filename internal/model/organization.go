@@ -7,10 +7,10 @@ import (
 
 //a struct to rep organization.
 type Organization struct {
-    ID                  uint64 `gorm:"primary_key; AUTO_INCREMENT;"`
+    ID                  uint64 `gorm:"primary_key; AUTO_INCREMENT; UNIQUE_INDEX;"`
     Name                string `gorm:"not null; unique; size:255;"`
     Description         string `gorm:"size:1023;"`
-    Email               string `gorm:"not null; unique; size:255;"`
+    Email               string `gorm:"not null; size:255;"`
     Status              uint8 `gorm:"DEFAULT: 1;"`
     OwnerID             uint64 `gorm:"index"`
     StreetAddress       string `gorm:"size:127;"`

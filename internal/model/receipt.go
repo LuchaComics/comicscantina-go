@@ -11,7 +11,7 @@ import (
 
 //a struct to rep product.
 type Receipt struct {
-    ID                  uint64 `gorm:"primary_key; AUTO_INCREMENT;"`
+    ID                  uint64 `gorm:"primary_key; AUTO_INCREMENT; UNIQUE_INDEX;"`
     Status              uint8 `gorm:"DEFAULT: 1;"`
     CreatedAt           time.Time
     UpdatedAt           time.Time

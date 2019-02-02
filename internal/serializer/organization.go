@@ -100,7 +100,7 @@ type OrganizationResponse struct {
     Name                string `json:"name,omitempty"`
     Description         string `json:"description,omitempty"`
     Email               string `json:"email" form:"email"`
-    Status              uint8 `gorm:"default: 1;"`
+    Status              uint8 `json:"status" form:"int"`
     OwnerID             uint64 `json:"owner_id,omitempty" form:"int"`
     StreetAddress      string `json:"street_address,omitempty"`
     StreetAddressExtra string `json:"street_address_extra,omitempty"`
@@ -127,6 +127,7 @@ func NewOrganizationResponse(organization *model.Organization) *OrganizationResp
         Name:               organization.Name,
         Description:        organization.Description,
         Email:              organization.Email,
+        Status:             organization.Status,
         OwnerID:            organization.OwnerID,
         StreetAddress:      organization.StreetAddress,
         StreetAddressExtra: organization.StreetAddressExtra,
