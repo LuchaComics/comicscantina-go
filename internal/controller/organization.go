@@ -43,11 +43,5 @@ func CreateOrganizationFunc(w http.ResponseWriter, r *http.Request) {
     // Take our data and serialize it back into a response object to hand
     // back to the organization.
     render.Status(r, http.StatusCreated)
-	render.Render(w, r, serializer.NewOrganizationResponse(
-        organization.ID,
-        organization.Name,
-        organization.Description,
-        organization.Email,
-        organization.OwnerID,
-    ))
+	render.Render(w, r, serializer.NewOrganizationResponse(organization))
 }

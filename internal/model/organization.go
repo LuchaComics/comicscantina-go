@@ -6,14 +6,14 @@ import (
 )
 
 type Organization struct {
-	ID                  uint64 `gorm:"primary_key; AUTO_INCREMENT;"`
+    ID                  uint64 `gorm:"primary_key; AUTO_INCREMENT;"`
     Name                string `gorm:"not null; unique; size:255;"`
     Description         string `gorm:"size:1023;"`
     Email               string `gorm:"not null; unique; size:255;"`
     Status              uint8 `gorm:"default: 1;"`
     OwnerID             uint64 `gorm:"index"`
-    StreetAdddress      string `gorm:"size:127;"`
-    StreetAdddressExtra string `gorm:"size:127;"`
+    StreetAddress       string `gorm:"size:127;"`
+    StreetAddressExtra  string `gorm:"size:127;"`
     City                string `gorm:"size:127;"`
     Province            string `gorm:"size:127;"`
     Country             string `gorm:"size:127;"`
@@ -24,6 +24,10 @@ type Organization struct {
     Fax                 string `gorm:"size:10;"`
     CreatedAt           time.Time
     UpdatedAt           time.Time
+    Facebook            string `gorm:"size:255;"`
+    Twitter             string `gorm:"size:255;"`
+    YouTube             string `gorm:"size:255;"`
+    Google              string `gorm:"size:255;"`
 }
 
 // Give custom table name in our database.

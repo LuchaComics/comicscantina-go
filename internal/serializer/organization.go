@@ -3,6 +3,7 @@ package serializer
 import (
     "errors"
     "net/http"
+    "github.com/luchacomics/comicscantina-go/internal/model"
     "github.com/luchacomics/comicscantina-go/internal/model_resource"
 )
 
@@ -11,8 +12,8 @@ type OrganizationRequest struct {
     Name                string `json:"name"; form:"name";`
     Description         string `json:"description,omitempty"; form:"description";`
     Email               string `json:"email"; form:"email";`
-    StreetAdddress      string `json:"street_address"; form:"street_address";`
-    StreetAdddressExtra string `json:"street_address_extra"; form:"street_address_extra";`
+    StreetAddress       string `json:"street_address"; form:"street_address";`
+    StreetAddressExtra  string `json:"street_address_extra"; form:"street_address_extra";`
     City                string `json:"city"; form:"city";`
     Province            string `json:"province"; form:"province";`
     Country             string `json:"country"; form:"country";`
@@ -35,7 +36,7 @@ func (data *OrganizationRequest) Bind(r *http.Request) error {
     if data.Email == "" {
         return errors.New("Missing email.")
     }
-    if data.StreetAdddress == "" {
+    if data.StreetAddress == "" {
         return errors.New("Missing street address.")
     }
     if data.City == "" {
@@ -54,21 +55,40 @@ func (data *OrganizationRequest) Bind(r *http.Request) error {
 
 // OrganizationResponse is the response payload for Organization data model.
 type OrganizationResponse struct {
-    ID uint64 `json:"id,omitempty" form:"int"`
-    Name string `json:"name,omitempty"`
-    Description string `json:"description,omitempty"`
-    Email string `json:"email" form:"email"`
-    OwnerID uint64 `json:"owner_id,omitempty" form:"int"`
+    ID                  uint64 `json:"id,omitempty" form:"int"`
+    Name                string `json:"name,omitempty"`
+    Description         string `json:"description,omitempty"`
+    Email               string `json:"email" form:"email"`
+    Status              uint8 `gorm:"default: 1;"`
+    OwnerID             uint64 `json:"owner_id,omitempty" form:"int"`
+    StreetAddress      string `json:"street_address,omitempty"`
+    StreetAddressExtra string `json:"street_address_extra,omitempty"`
+    City                string `json:"city,omitempty"`
+    Province            string `json:"province,omitempty"`
+    Country             string `json:"country,omitempty"`
+    Currency            string `json:"currency,omitempty"`
+    Language            string `json:"language,omitempty"`
+    Website             string `json:"website,omitempty"`
+    Phone               string `json:"phone,omitempty"`
+    Fax                 string `json:"fax,omitempty"`
+    // CreatedAt           time.Time
+    // UpdatedAt           time.Time
+    Facebook            string `json:"facebook,omitempty"`
+    Twitter             string `json:"twitter,omitempty"`
+    YouTube             string `json:"youtube,omitempty"`
+    Google              string `json:"google,omitempty"`
 }
 
 // Function will create our output payload.
-func NewOrganizationResponse(id uint64, name string, description string, email string, userID uint64) *OrganizationResponse {
+func NewOrganizationResponse(organization *model.Organization) *OrganizationResponse {
 	resp := &OrganizationResponse{
-        ID: id,
-        Name: name,
-        Description: description,
-        Email: email,
-        OwnerID: userID,
+        ID: organization.ID,
+        Name: organization.Name,
+        Description: organization.Description,
+        Email: organization.Email,
+        OwnerID: organization.OwnerID,
+        StreetAddress: organization.StreetAddress,
+        StreetAddressExtra: organization.StreetAddressExtra,
     }
 	return resp
 }

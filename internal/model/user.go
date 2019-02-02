@@ -6,8 +6,8 @@ import (
 
 //a struct to rep user account
 type User struct {
-	ID            uint64 `gorm:"primary_key; AUTO_INCREMENT;"`
-	Email         string `gorm:"not null; unique; size:255;"`
+    ID            uint64 `gorm:"primary_key; AUTO_INCREMENT;"`
+    Email         string `gorm:"not null; unique; size:255;"`
     PasswordHash  string `gorm:"size:511`
     FirstName     string `gorm:"type:varchar(127)”`
     LastName      string `gorm:"type:varchar(127)”`
