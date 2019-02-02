@@ -5,10 +5,11 @@ import (
     "fmt"
 	"net/http"
 	"github.com/go-chi/render"
+	"github.com/luchacomics/comicscantina-go/internal/model"
 	"github.com/luchacomics/comicscantina-go/internal/model_resource"
     "github.com/luchacomics/comicscantina-go/internal/serializer"
 	// "github.com/luchacomics/comicscantina-data/internal/pkg/database"
-    "github.com/luchacomics/comicscantina-go/internal/base/service"
+    // "github.com/luchacomics/comicscantina-go/internal/base/service"
 )
 
 
@@ -21,11 +22,7 @@ func RetrieveOrganizationFunc(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateOrganizationFunc(w http.ResponseWriter, r *http.Request) {
-    user_id := service.GetUserIDFromContext(r.Context())
-	if user_id == 0 {
-		http.Error(w, "User ID not inputted.", http.StatusUnauthorized)
-		return
-	}
+    user := r.Context().Value("user").(*model.User)
 
     // // Take the user POST data and serialize it.
     data := &serializer.OrganizationRequest{}
@@ -40,7 +37,7 @@ func CreateOrganizationFunc(w http.ResponseWriter, r *http.Request) {
         data.Name,
         data.Description,
         data.Email,
-        user_id,
+        user.ID,
     )
 
     // Take our data and serialize it back into a response object to hand

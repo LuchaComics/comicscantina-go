@@ -1,6 +1,7 @@
 package model_resource
 
 import (
+    // "time"
     _ "github.com/jinzhu/gorm"
     "github.com/luchacomics/comicscantina-go/internal/base/database"
     "github.com/luchacomics/comicscantina-go/internal/model"
@@ -8,7 +9,7 @@ import (
 
 // func (dao *database.DataAcessObject) LookupUserByEmail
 
-// Function looks up the user by email.
+
 func DBLookupOrganizationByID(id uint64) (*model.Organization, int) {
     // Get our database connection.
     dao := database.Instance()
@@ -24,16 +25,32 @@ func DBLookupOrganizationByID(id uint64) (*model.Organization, int) {
 }
 
 
+func DBLookupOrganizationByName(name string) (*model.Organization, int) {
+    // Get our database connection.
+    dao := database.Instance()
+    db := dao.GetORM()
+
+    // The model we will be creating.
+    var organization model.Organization
+    var count int
+
+    // Find our user.
+    db.Where("name = ?", name).First(&organization).Count(&count)
+    return &organization, count
+}
+
 func DBNewOrganization(name string, description string, email string, ownerID uint64) (*model.Organization, error) {
     // The model we will be creating.
     var organization model.Organization
 
     // Create our `User` object in our database.
     organization = model.Organization {
-        Email:        email,
         Name:         name,
         Description:  description,
+        Email:        email,
         OwnerID:      ownerID,
+        // CreatedAt:    time.Now(),
+        // UpdatedAt:    time.Now(),
     }
 
     // Get our database connection.

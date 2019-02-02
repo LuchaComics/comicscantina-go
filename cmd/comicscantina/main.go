@@ -10,6 +10,7 @@ import (
     "github.com/luchacomics/comicscantina-go/internal/controller"
 	_ "github.com/luchacomics/comicscantina-go/internal/base/database"
 	"github.com/luchacomics/comicscantina-go/internal/base/service"
+	cc_middleware "github.com/luchacomics/comicscantina-go/internal/base/middleware"
 )
 
 // Initialize our applications shared functions.
@@ -45,6 +46,10 @@ func main() {
 		// own very easily, look at the Authenticator method in jwtauth.go
 		// and tweak it, its not scary.
 		r.Use(jwtauth.Authenticator)
+
+        // This is the comics cantina authenticated user middleware which will
+		// lookup the verified JWT token and attach as a context to the request.
+		r.Use(cc_middleware.ProfileCtx)
 
 		// API endpoints.
 		r.Get("/api/v1/profile", controller.ProfileRetrieveFunc)

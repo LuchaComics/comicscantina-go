@@ -1,40 +1,32 @@
 package model
 
 import (
+    // "time"
     _ "github.com/jinzhu/gorm"
 )
 
 type Organization struct {
-	ID uint64 `gorm:"primary_key";"AUTO_INCREMENT"`
-    OwnerID uint64
-	Name string `gorm:"type:varchar(255)”`
-    Description string `gorm:"type:varchar(1023)”`
-    StreetName string `gorm:"type:varchar(127)”`
-    StreetNumber string `gorm:"type:varchar(127)”`
-    UnitNumber string `gorm:"type:varchar(127)”`
-    City string `gorm:"type:varchar(127)”`
-    Province string `gorm:"type:varchar(127)”`
-    Country string `gorm:"type:varchar(127)”`
-    Currency string `gorm:"type:varchar(127)”`
-    Language string `gorm:"type:varchar(2)”`
-    Website string `gorm:"type:varchar(255)”`
-    Phone string `gorm:"type:varchar(10)”`
-    Fax string `gorm:"type:varchar(10)”`
-    Email string `gorm:"type:varchar(127)”`
+	ID                  uint64 `gorm:"primary_key; AUTO_INCREMENT;"`
+    Name                string `gorm:"not null; unique; size:255;"`
+    Description         string `gorm:"size:1023;"`
+    Email               string `gorm:"not null; unique; size:255;"`
+    // Status              uint8
+    OwnerID             uint64 `gorm:"index"`
+    // StreetAdddress      string `gorm:"size:127;"`
+    // StreetAdddressExtra string `gorm:"size:127;"`
+    // City                string `gorm:"size:127;"`
+    // Province            string `gorm:"size:127;"`
+    // Country             string `gorm:"size:127;"`
+    // Currency string `gorm:"type:varchar(127)”`
+    // Language string `gorm:"type:varchar(2)”`
+    // Website string `gorm:"type:varchar(255)”`
+    // Phone string `gorm:"type:varchar(10)”`
+    // Fax string `gorm:"type:varchar(10)”`
 
-    // joined = models.DateTimeField(auto_now_add=True)
-    // last_updated = models.DateTimeField(auto_now=True)
-    //
-    // # Variable controls whether the Organization is no longer listed in our
-    // # system and Users are not allowed to login/access it.
-    // is_suspended = models.BooleanField(default=False, db_index=True)
-    //
-    // # Variable controls whether we are to allow displaying and listing
-    // # this Organization in our system. Setting to "False" means it won't
-    // # appear anywhere. This value is read-only and is only adjusted
-    // # by the staff of eCantina to set it 'False'.
-    // is_listed = models.BooleanField(default=True, db_index=True)
-    //
+    // CreatedAt time.Time `gorm:"DEFAULT:current_timestamp"`
+    // UpdatedAt time.Time `gorm:"DEFAULT:current_timestamp"`
+    // DeletedAt time.Time
+
     // # Social Media
     // twitter = models.CharField(max_length=15, null=True, blank=True)
     // facebook_url = models.URLField(null=True, blank=True)

@@ -2,6 +2,7 @@ package controller
 
 import (
     "fmt"
+    "context"
     "strings"
     "net/http"
     "net/http/httptest"
@@ -11,29 +12,6 @@ import (
     "github.com/luchacomics/comicscantina-go/internal/controller"
     "github.com/luchacomics/comicscantina-go/internal/model_resource"
 )
-
-
-func Test_UnauthorizedProfileFunc(t *testing.T) {
-    // Restart the database.
-    dao := database.Instance()
-    dao.DropAndCreateDatabase()
-
-    // Run our unit test.
-    req, err := http.NewRequest("GET", "/api/v1/profile", nil)
-    if err != nil {
-        t.Fatal(err)
-    }
-    res := httptest.NewRecorder()
-    controller.ProfileRetrieveFunc(res, req)
-
-    // (2) Valide the status.
-    if res.Code != 401 {
-        t.Fatalf("Expected %d got %d", 401, res.Code)
-    }
-
-    // (3) For debugging purposes only.
-    fmt.Println("response:", res.Body.String())
-}
 
 
 func Test_ProfileFunc(t *testing.T) {
@@ -54,7 +32,8 @@ func Test_ProfileFunc(t *testing.T) {
 
     // Attach our authentication.
     req.Header.Add("Authorization", bearer_token)
-    ctx := service.NewContextWithJWTToken(token)
+    ctx := service.NewContextWithJWTToken(token) // Required by `JWT` middleware.
+    ctx = context.WithValue(ctx, "user", user)   // Required by `profile_middleware.go`.
     req = req.WithContext(ctx)
 
     // Create our response object.
@@ -70,4 +49,7 @@ func Test_ProfileFunc(t *testing.T) {
     if strings.Contains(act_str, exp) == false {
         t.Fatalf("Expected %s got %s", exp, act)
     }
+
+    // For debugging purposes only.
+    fmt.Println("response:", res.Body.String())
 }

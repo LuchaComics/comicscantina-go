@@ -1,24 +1,24 @@
 package serializer
 
 import (
-    // "errors"
+    "errors"
     "net/http"
-    // "github.com/luchacomics/comicscantina-go/internal/model_resource"
+    "github.com/luchacomics/comicscantina-go/internal/model_resource"
 )
 
 
 type OrganizationRequest struct {
-    Name string `json:"name,omitempty"`
+    Name string `json:"name"`
     Description string `json:"description,omitempty"`
     Email string `json:"email" form:"email"`
 }
 
 func (data *OrganizationRequest) Bind(r *http.Request) error {
-    // // Check to see if the user exists in the database.
-    // _, count := model_resource.DBLookupOrganizationByID(data.ID)
-    // if count > 0 {
-    //     return errors.New("ID is not unique.")
-    // }
+    // Check to see if the user exists in the database.
+    _, count := model_resource.DBLookupOrganizationByName(data.Name)
+    if count > 0 {
+        return errors.New("Name is not unique.")
+    }
 	return nil
 }
 
