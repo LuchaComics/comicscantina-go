@@ -81,7 +81,7 @@ func (data *StoreDetailRequest) Save(ctx context.Context) (*model.Store, error) 
         Name:               data.Name,
         Description:        data.Description,
         Email:              data.Email,
-        // OrganizationID:     data.OrganizationID,
+        OrganizationID:     data.OrganizationID,
         // CreatedAt:    time.Now(),
         // UpdatedAt:    time.Now(),
         StreetAddress:      data.StreetAddress,
