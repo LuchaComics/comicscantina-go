@@ -4,6 +4,7 @@ import (
     "context"
     "errors"
     "net/http"
+    "github.com/go-chi/render"
     "github.com/luchacomics/comicscantina-go/internal/base/database"
     "github.com/luchacomics/comicscantina-go/internal/model"
     "github.com/luchacomics/comicscantina-go/internal/model_manager"
@@ -144,4 +145,37 @@ func NewOrganizationResponse(organization *model.Organization) *OrganizationResp
 func (rd *OrganizationResponse) Render(w http.ResponseWriter, r *http.Request) error {
 	// Pre-processing before a response is marshalled and sent across the wire
 	return nil
+}
+
+// Individual organization list response payload.
+type OrganizationListItemResponse struct {
+    ID                  uint64 `json:"id,omitempty" form:"int"`
+    Name                string `json:"name,omitempty"`
+    Description         string `json:"description,omitempty"`
+}
+
+// Constructor creates a OrganizationListItemResponse payload from the
+// Organization model data.
+func NewOrganizationListItemResponse(object *model.Organization) *OrganizationListItemResponse {
+	resp := &OrganizationListItemResponse{
+        ID: object.ID,
+        Name: object.Name,
+        Description: object.Description,
+    }
+	return resp
+}
+
+func (rd *OrganizationListItemResponse) Render(w http.ResponseWriter, r *http.Request) error {
+	// Pre-processing before a response is marshalled and sent across the wire
+	return nil
+}
+
+// Constructor creates a JSON response payload from the array of Organization
+// model data objects.
+func NewOrganizationListResponse(organizations []model.Organization) []render.Renderer {
+	list := []render.Renderer{}
+	for _, organization := range organizations {
+		list = append(list, NewOrganizationListItemResponse(&organization))
+	}
+	return list
 }

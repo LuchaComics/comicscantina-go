@@ -32,18 +32,18 @@ func UserManagerInstance() (*UserManager) {
     }
 }
 
-func (manager *UserManager) GetByEmail(email string) (*model.User, int) {
+func (manager *UserManager) GetByEmail(email string) (*model.User, uint64) {
     orm := manager.dao.GetORM() // Get our database layer.
     var user model.User // The model we will be returning.
-    var count int
+    var count uint64
     orm.Where("email = ?", email).First(&user).Count(&count) // Find our user.
     return &user, count
 }
 
-func (manager *UserManager) GetByID(id uint64) (*model.User, int) {
+func (manager *UserManager) GetByID(id uint64) (*model.User, uint64) {
     orm := manager.dao.GetORM() // Get our database layer.
     var user model.User // The model we will be returning.
-    var count int
+    var count uint64
     orm.Where("id = ?", id).First(&user).Count(&count) // Find our user.
     return &user, count
 }

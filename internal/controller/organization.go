@@ -1,12 +1,12 @@
 package controller
 
 import (
+    "fmt"
     "net/http"
+    "strconv"
 	"github.com/go-chi/render"
-	// "github.com/luchacomics/comicscantina-go/internal/model"
+	"github.com/luchacomics/comicscantina-go/internal/model_manager"
     "github.com/luchacomics/comicscantina-go/internal/serializer"
-	// "github.com/luchacomics/comicscantina-data/internal/pkg/database"
-    // "github.com/luchacomics/comicscantina-go/internal/base/service"
 )
 
 
@@ -30,28 +30,23 @@ func CreateOrganizationFunc(w http.ResponseWriter, r *http.Request) {
 
 func ListOrganizationsFunc(w http.ResponseWriter, r *http.Request) {
     // // Extract the current user from the request context.
-    // user := ctx.Value("user").(*model.User)
+    // user := r.Context().Value("user").(*model.User)
 
+    // Setup our variables for the paginator.
+    pageString := r.FormValue("page")
+    pageIndex, err := strconv.ParseUint(pageString, 10, 64)
+    if err != nil {
+        pageIndex = 0
+    }
 
-    // // Setup our variables for the paginator.
-    // pageString := r.FormValue("page")
-    // pageIndex, err := strconv.ParseUint(pageString, 10, 64)
-    // if err != nil {
-    //     pageIndex = 0
-    // }
-    //
-	// // Get our list of Country objects.
-	// countries, _ := model_resource.DBGetPaginatedCountryList(pageIndex)
-    //
-    // // Iterate through each `Country` object and render our specific view.
-    // if err := render.RenderList(w, r, serializer.NewCountryListResponse(countries)); err != nil {
-	// 	render.Render(w, r, serializer.ErrRender(err))
-	// 	return
-	// }
+    organizations, _ := model_manager.OrganizationManagerInstance().AllByPageIndex(pageIndex)
+    fmt.Println(organizations)
 
-
-
-    w.Write([]byte("TODO: Implement - List"))
+    // Iterate through each `Country` object and render our specific view.
+    if err := render.RenderList(w, r, serializer.NewOrganizationListResponse(organizations)); err != nil {
+		render.Render(w, r, serializer.ErrRender(err))
+		return
+	}
 }
 
 
