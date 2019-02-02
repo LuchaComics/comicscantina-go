@@ -14,25 +14,25 @@ import (
 
 
 func CreateOrganizationFunc(w http.ResponseWriter, r *http.Request) {
-    // // Take the user POST data and serialize it.
+    // Take the user POST data and serialize it.
     data := &serializer.OrganizationRequest{}
 	if err := render.Bind(r, data); err != nil {
 		render.Render(w, r, serializer.ErrInvalidRequest(err))
 		return
 	}
 
-    // Create our user model in our database.
+    // Create our user model in our database from the serialized data.
     organization, _ := data.Save(r.Context())
 
-    // Take our data and serialize it back into a response object to hand
-    // back to the organization.
+    // Take newly created Organization model data object and serialize it
+    // to be returned as the result for this API endpoint.
     render.Status(r, http.StatusCreated)
 	render.Render(w, r, serializer.NewOrganizationResponse(organization))
 }
 
 
 func ListOrganizationsFunc(w http.ResponseWriter, r *http.Request) {
-    // Extract from the context our URL parameter(s).
+    // Extract from the context our URL parameter.
     pageIndex := r.Context().Value("pageIndex").(uint64)
 
     organizations, _ := model_manager.OrganizationManagerInstance().AllByPageIndex(pageIndex)
@@ -46,6 +46,9 @@ func ListOrganizationsFunc(w http.ResponseWriter, r *http.Request) {
 }
 
 
+// Middleware will extract the `organizationID` parameter from the URL and
+// attempt to lookup the Organization model data object in the database. If
+// the object was found then attach it to the context, else return an error.
 func OrganizationCtx(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if organizationIDString := chi.URLParam(r, "organizationID"); organizationIDString != "" {
