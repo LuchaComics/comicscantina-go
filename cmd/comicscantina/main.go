@@ -74,8 +74,8 @@ func main() {
 
 		// Store
 		r.With(cc_middleware.PaginationCtx).Get("/api/v1/stores", controller.ListStoresFunc)
-		// r.Post("/api/v1/stores", controller.CreateStoreFunc)
-		// r.With(controller.StoreCtx).Get("/api/v1/store/{storeID}", controller.RetrieveStoreFunc)
+		r.Post("/api/v1/stores", controller.CreateStoreFunc)
+		r.With(controller.StoreCtx).Get("/api/v1/store/{storeID}", controller.RetrieveStoreFunc)
 
 		// Product
 		//TODO: IMPLEMENT.
@@ -84,5 +84,8 @@ func main() {
 		//TODO: IMPLEMENT.
 	})
 
+    //------------------------------------------------------------------------//
+	//                         HTTP Running Server                            //
+	//------------------------------------------------------------------------//
 	http.ListenAndServe(":8080", r)
 }

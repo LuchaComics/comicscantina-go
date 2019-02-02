@@ -10,6 +10,89 @@ import (
     "github.com/luchacomics/comicscantina-go/internal/model_manager"
 )
 
+
+//----------------------------------------------------------------------------//
+//                                  LIST                                      //
+//----------------------------------------------------------------------------//
+
+
+// Individual organization list response payload.
+type OrganizationListItemResponse struct {
+    ID                  uint64 `json:"id,omitempty" form:"int"`
+    Name                string `json:"name,omitempty"`
+    Description         string `json:"description,omitempty"`
+}
+
+// Constructor creates a OrganizationListItemResponse payload from the
+// Organization model data.
+func NewOrganizationListItemResponse(object *model.Organization) *OrganizationListItemResponse {
+	resp := &OrganizationListItemResponse{
+        ID: object.ID,
+        Name: object.Name,
+        Description: object.Description,
+    }
+	return resp
+}
+
+func (rd *OrganizationListItemResponse) Render(w http.ResponseWriter, r *http.Request) error {
+	// Pre-processing before a response is marshalled and sent across the wire
+	return nil
+}
+
+// Constructor creates a JSON response payload from the array of Organization
+// model data objects.
+func NewOrganizationListResponse(organizations []model.Organization) []render.Renderer {
+	list := []render.Renderer{}
+	for _, organization := range organizations {
+		list = append(list, NewOrganizationListItemResponse(&organization))
+	}
+	return list
+}
+
+
+//----------------------------------------------------------------------------//
+//                                  CREATE                                    //
+//----------------------------------------------------------------------------//
+
+
+// Function will create Organization data model from the input payload.
+func (data *OrganizationRequest) Save(ctx context.Context) (*model.Organization, error) {
+    // Extract the current user from the request context.
+    user := ctx.Value("user").(*model.User)
+
+    // The model we will be creating.
+    var organization model.Organization
+
+    // Create our `User` object in our database.
+    organization = model.Organization {
+        Name:               data.Name,
+        Description:        data.Description,
+        Email:              data.Email,
+        OwnerID:            user.ID,
+        // CreatedAt:    time.Now(),
+        // UpdatedAt:    time.Now(),
+        StreetAddress:      data.StreetAddress,
+        StreetAddressExtra: data.StreetAddressExtra,
+        City:               data.City,
+        Province:           data.Province,
+        Country:            data.Country,
+        Currency:           data.Currency,
+        Language:           data.Language,
+        Website:            data.Website,
+        Phone:              data.Phone,
+        Fax:                data.Fax,
+    }
+
+    // Get our database connection.
+    dao := database.Instance()
+    db := dao.GetORM()
+
+    // Create our object in the database.
+    db.Create(&organization)
+
+    return &organization, nil
+}
+
 // OrganizationRequest is the request payload for Organization data model.
 type OrganizationRequest struct {
     Name                string `json:"name"; form:"name";`
@@ -56,46 +139,14 @@ func (data *OrganizationRequest) Bind(r *http.Request) error {
 	return nil
 }
 
-// Function will create Organization data model from the input payload.
-func (data *OrganizationRequest) Save(ctx context.Context) (*model.Organization, error) {
-    // Extract the current user from the request context.
-    user := ctx.Value("user").(*model.User)
 
-    // The model we will be creating.
-    var organization model.Organization
+//----------------------------------------------------------------------------//
+//                                  DETAILS                                   //
+//----------------------------------------------------------------------------//
 
-    // Create our `User` object in our database.
-    organization = model.Organization {
-        Name:               data.Name,
-        Description:        data.Description,
-        Email:              data.Email,
-        OwnerID:            user.ID,
-        // CreatedAt:    time.Now(),
-        // UpdatedAt:    time.Now(),
-        StreetAddress:      data.StreetAddress,
-        StreetAddressExtra: data.StreetAddressExtra,
-        City:               data.City,
-        Province:           data.Province,
-        Country:            data.Country,
-        Currency:           data.Currency,
-        Language:           data.Language,
-        Website:            data.Website,
-        Phone:              data.Phone,
-        Fax:                data.Fax,
-    }
 
-    // Get our database connection.
-    dao := database.Instance()
-    db := dao.GetORM()
-
-    // Create our object in the database.
-    db.Create(&organization)
-
-    return &organization, nil
-}
-
-// OrganizationResponse is the response payload for Organization data model.
-type OrganizationResponse struct {
+// OrganizationDetailResponse is the response payload for Organization data model.
+type OrganizationDetailResponse struct {
     ID                  uint64 `json:"id,omitempty" form:"int"`
     Name                string `json:"name,omitempty"`
     Description         string `json:"description,omitempty"`
@@ -121,8 +172,8 @@ type OrganizationResponse struct {
 }
 
 // Function will create our output payload.
-func NewOrganizationResponse(organization *model.Organization) *OrganizationResponse {
-	resp := &OrganizationResponse{
+func NewOrganizationDetailResponse(organization *model.Organization) *OrganizationDetailResponse {
+	resp := &OrganizationDetailResponse{
         ID:                 organization.ID,
         Name:               organization.Name,
         Description:        organization.Description,
@@ -143,40 +194,7 @@ func NewOrganizationResponse(organization *model.Organization) *OrganizationResp
 	return resp
 }
 
-func (rd *OrganizationResponse) Render(w http.ResponseWriter, r *http.Request) error {
+func (rd *OrganizationDetailResponse) Render(w http.ResponseWriter, r *http.Request) error {
 	// Pre-processing before a response is marshalled and sent across the wire
 	return nil
-}
-
-// Individual organization list response payload.
-type OrganizationListItemResponse struct {
-    ID                  uint64 `json:"id,omitempty" form:"int"`
-    Name                string `json:"name,omitempty"`
-    Description         string `json:"description,omitempty"`
-}
-
-// Constructor creates a OrganizationListItemResponse payload from the
-// Organization model data.
-func NewOrganizationListItemResponse(object *model.Organization) *OrganizationListItemResponse {
-	resp := &OrganizationListItemResponse{
-        ID: object.ID,
-        Name: object.Name,
-        Description: object.Description,
-    }
-	return resp
-}
-
-func (rd *OrganizationListItemResponse) Render(w http.ResponseWriter, r *http.Request) error {
-	// Pre-processing before a response is marshalled and sent across the wire
-	return nil
-}
-
-// Constructor creates a JSON response payload from the array of Organization
-// model data objects.
-func NewOrganizationListResponse(organizations []model.Organization) []render.Renderer {
-	list := []render.Renderer{}
-	for _, organization := range organizations {
-		list = append(list, NewOrganizationListItemResponse(&organization))
-	}
-	return list
 }

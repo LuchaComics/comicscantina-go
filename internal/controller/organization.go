@@ -13,6 +13,11 @@ import (
 )
 
 
+//----------------------------------------------------------------------------//
+//                                  CREATE                                    //
+//----------------------------------------------------------------------------//
+
+
 func CreateOrganizationFunc(w http.ResponseWriter, r *http.Request) {
     // Take the user POST data and serialize it.
     data := &serializer.OrganizationRequest{}
@@ -27,8 +32,13 @@ func CreateOrganizationFunc(w http.ResponseWriter, r *http.Request) {
     // Take newly created Organization model data object and serialize it
     // to be returned as the result for this API endpoint.
     render.Status(r, http.StatusCreated)
-	render.Render(w, r, serializer.NewOrganizationResponse(organization))
+	render.Render(w, r, serializer.NewOrganizationDetailResponse(organization))
 }
+
+
+//----------------------------------------------------------------------------//
+//                                  LIST                                      //
+//----------------------------------------------------------------------------//
 
 
 func ListOrganizationsFunc(w http.ResponseWriter, r *http.Request) {
@@ -44,6 +54,11 @@ func ListOrganizationsFunc(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+
+//----------------------------------------------------------------------------//
+//                                 RETRIEVE                                   //
+//----------------------------------------------------------------------------//
 
 
 // Middleware will extract the `organizationID` parameter from the URL and
@@ -68,7 +83,7 @@ func OrganizationCtx(next http.Handler) http.Handler {
 func RetrieveOrganizationFunc(w http.ResponseWriter, r *http.Request) {
     organization := r.Context().Value("organization").(*model.Organization)
 
-	if err := render.Render(w, r, serializer.NewOrganizationResponse(organization)); err != nil {
+	if err := render.Render(w, r, serializer.NewOrganizationDetailResponse(organization)); err != nil {
 		render.Render(w, r, serializer.ErrRender(err))
 		return
 	}

@@ -195,3 +195,23 @@ The API endpoint used to list the stores in the system.
     "owner_id": 1
   }
   ```
+
+## Organization - Create
+### Description
+
+  ```
+  /api/v1/organizations
+  ```
+
+The API endpoint used to create the organization.
+
+### Example Command
+
+  ```
+  http post 127.0.0.1:8080/api/v1/stores Authorization:"Bearer $COMICS_WS_API_TOKEN" name="Main Store" description="The brick and morter comics store." email="bart@mikasoftware.com" street_address="111-204 Infinite Loop Road" city="London" province="Ontario" country="Canada" organization_id=1
+  ```
+
+### Example Output
+
+  ```
+  ```
