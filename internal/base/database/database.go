@@ -46,7 +46,7 @@ func Instance() (*DataAcessObject) {
     // PLEASE READ FOR MORE INFORAMTION:
     // http://doc.gorm.io/
 
-    // // // Automatically delete previous database schema.
+    // // Automatically delete previous database schema.
     // db.Debug().DropTableIfExists(&model.Product{})
     // db.Debug().DropTableIfExists(&model.Store{})
     // db.Debug().DropTableIfExists(&model.Organization{})

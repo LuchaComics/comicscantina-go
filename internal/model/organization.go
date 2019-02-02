@@ -29,8 +29,8 @@ type Organization struct {
     Twitter             string `gorm:"size:255;"`
     YouTube             string `gorm:"size:255;"`
     Google              string `gorm:"size:255;"`
-    Stores              []Store `gorm:"foreignkey:OrganizationID;index;"`
-    Products            []Store `gorm:"foreignkey:OrganizationID;index;"`
+    Stores              []Store `gorm:"foreignkey:OrganizationID;"`
+    Products            []Product `gorm:"foreignkey:OrganizationID;"`
 }
 
 // Give custom table name in our database.
