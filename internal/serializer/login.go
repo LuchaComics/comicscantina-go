@@ -12,11 +12,18 @@ type LoginRequest struct {
     Password string `json:"password" form:"password"`
 }
 
+// Function will validate the input payload.
 func (data *LoginRequest) Bind(r *http.Request) error {
+    if data.Email == "" {
+        return errors.New("Missing email.")
+    }
     // Check to see if the user exists in the database.
     user, count := model_resource.DBLookupUserByEmail(data.Email)
     if count <= 0 {
         return errors.New("Email or password is incorrect. (1)")
+    }
+    if data.Password == "" {
+        return errors.New("Missing password.")
     }
     // Try user password.
     passwordsMatch := service.CheckPasswordHash(data.Password, user.PasswordHash)

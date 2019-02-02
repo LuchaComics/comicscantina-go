@@ -8,17 +8,47 @@ import (
 
 
 type OrganizationRequest struct {
-    Name string `json:"name"`
-    Description string `json:"description,omitempty"`
-    Email string `json:"email" form:"email"`
+    Name                string `json:"name"; form:"name";`
+    Description         string `json:"description,omitempty"; form:"description";`
+    Email               string `json:"email"; form:"email";`
+    StreetAdddress      string `json:"street_address"; form:"street_address";`
+    StreetAdddressExtra string `json:"street_address_extra"; form:"street_address_extra";`
+    City                string `json:"city"; form:"city";`
+    Province            string `json:"province"; form:"province";`
+    Country             string `json:"country"; form:"country";`
+    Currency            string `json:"currency"; form:"currency";`
+    Language            string `json:"language"; form:"language";`
+    Website             string `json:"website"; form:"website";`
+    Phone               string `json:"phone"; form:"phone";`
+    Fax                 string `json:"fax"; form:"fax";`
 }
 
+// Function will validate the input payload.
 func (data *OrganizationRequest) Bind(r *http.Request) error {
-    // Check to see if the user exists in the database.
+    if data.Name == "" {
+        return errors.New("Missing name.")
+    }
     _, count := model_resource.DBLookupOrganizationByName(data.Name)
     if count > 0 {
         return errors.New("Name is not unique.")
     }
+    if data.Email == "" {
+        return errors.New("Missing email.")
+    }
+    if data.StreetAdddress == "" {
+        return errors.New("Missing street address.")
+    }
+    if data.City == "" {
+        return errors.New("Missing city.")
+    }
+    if data.Province == "" {
+        return errors.New("Missing province.")
+    }
+    if data.Country == "" {
+        return errors.New("Missing country.")
+    }
+
+    // Return with no errors.
 	return nil
 }
 

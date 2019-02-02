@@ -23,10 +23,21 @@ type RegistrationRequest struct {
 }
 
 func (data *RegistrationRequest) Bind(r *http.Request) error {
-    // Check to see if the user exists in the database.
+    if data.Email == "" {
+        return errors.New("Missing email.")
+    }
     _, count := model_resource.DBLookupUserByEmail(data.Email)
     if count > 0 {
         return errors.New("Email is not unique.")
+    }
+    if data.Password == "" {
+        return errors.New("Missing password.")
+    }
+    if data.FirstName == "" {
+        return errors.New("Missing first name.")
+    }
+    if data.LastName == "" {
+        return errors.New("Missing last name.")
     }
 	return nil
 }
