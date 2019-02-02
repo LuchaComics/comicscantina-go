@@ -58,8 +58,6 @@ func main() {
 		r.With(controller.OrganizationCtx).Get("/api/v1/organization/{organizationID}", controller.RetrieveOrganizationFunc)
 
 		// TODO:
-		// | /organizations      |
-		// | /organization/<ID>/ |
 		// | /store              |
 		// | /store/<ID>         |
 		// | /products           |
