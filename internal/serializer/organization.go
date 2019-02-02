@@ -1,8 +1,10 @@
 package serializer
 
 import (
+    "context"
     "errors"
     "net/http"
+    "github.com/luchacomics/comicscantina-go/internal/base/database"
     "github.com/luchacomics/comicscantina-go/internal/model"
     "github.com/luchacomics/comicscantina-go/internal/model_resource"
 )
@@ -53,6 +55,44 @@ func (data *OrganizationRequest) Bind(r *http.Request) error {
 	return nil
 }
 
+// Function will create Organization data model from the input payload.
+func (data *OrganizationRequest) Save(ctx context.Context) (*model.Organization, error) {
+    // Extract the current user from the request context.
+    user := ctx.Value("user").(*model.User)
+
+    // The model we will be creating.
+    var organization model.Organization
+
+    // Create our `User` object in our database.
+    organization = model.Organization {
+        Name:               data.Name,
+        Description:        data.Description,
+        Email:              data.Email,
+        OwnerID:            user.ID,
+        // CreatedAt:    time.Now(),
+        // UpdatedAt:    time.Now(),
+        StreetAddress:      data.StreetAddress,
+        StreetAddressExtra: data.StreetAddressExtra,
+        City:               data.City,
+        Province:           data.Province,
+        Country:            data.Country,
+        Currency:           data.Currency,
+        Language:           data.Language,
+        Website:            data.Website,
+        Phone:              data.Phone,
+        Fax:                data.Fax,
+    }
+
+    // Get our database connection.
+    dao := database.Instance()
+    db := dao.GetORM()
+
+    // Create our object in the database.
+    db.Create(&organization)
+
+    return &organization, nil
+}
+
 // OrganizationResponse is the response payload for Organization data model.
 type OrganizationResponse struct {
     ID                  uint64 `json:"id,omitempty" form:"int"`
@@ -82,13 +122,21 @@ type OrganizationResponse struct {
 // Function will create our output payload.
 func NewOrganizationResponse(organization *model.Organization) *OrganizationResponse {
 	resp := &OrganizationResponse{
-        ID: organization.ID,
-        Name: organization.Name,
-        Description: organization.Description,
-        Email: organization.Email,
-        OwnerID: organization.OwnerID,
-        StreetAddress: organization.StreetAddress,
+        ID:                 organization.ID,
+        Name:               organization.Name,
+        Description:        organization.Description,
+        Email:              organization.Email,
+        OwnerID:            organization.OwnerID,
+        StreetAddress:      organization.StreetAddress,
         StreetAddressExtra: organization.StreetAddressExtra,
+        City:               organization.City,
+        Province:           organization.Province,
+        Country:            organization.Country,
+        Currency:           organization.Currency,
+        Language:           organization.Language,
+        Website:            organization.Website,
+        Phone:              organization.Phone,
+        Fax:                organization.Fax,
     }
 	return resp
 }
