@@ -33,8 +33,6 @@ func main() {
     r.Get("/", controller.HealthCheckFunc)
 	r.Post("/api/v1/register", controller.RegisterFunc)
     r.Post("/api/v1/login", controller.LoginFunc)
-	// r.Get("/api/v1/public-organizations", controller.ListPublicOrganizationsFunc)
-	// r.With(controller.PublicOrganizationCtx).Get("/api/v1/public-organization/{organizationID}", controller.GetPublicOrganization)
 
 	// Protected routes
 	r.Group(func(r chi.Router) {
@@ -56,12 +54,6 @@ func main() {
 		r.Get("/api/v1/organizations", controller.ListOrganizationsFunc)
 		r.Post("/api/v1/organizations", controller.CreateOrganizationFunc)
 		r.With(controller.OrganizationCtx).Get("/api/v1/organization/{organizationID}", controller.RetrieveOrganizationFunc)
-
-		// TODO:
-		// | /store              |
-		// | /store/<ID>         |
-		// | /products           |
-		// | /product/<ID>       |
 	})
 
 	http.ListenAndServe(":8080", r)

@@ -47,6 +47,7 @@ func Instance() (*DataAcessObject) {
     // http://doc.gorm.io/
 
     // // Automatically delete previous database schema.
+    // db.Debug().DropTableIfExists(&model.Receipt{})
     // db.Debug().DropTableIfExists(&model.Product{})
     // db.Debug().DropTableIfExists(&model.Store{})
     // db.Debug().DropTableIfExists(&model.Organization{})
@@ -57,6 +58,7 @@ func Instance() (*DataAcessObject) {
     db.Debug().AutoMigrate(&model.Organization{})
     db.Debug().AutoMigrate(&model.Store{})
     db.Debug().AutoMigrate(&model.Product{})
+    db.Debug().AutoMigrate(&model.Receipt{})
 
     // Keep an instance of our new object.
     dao = &DataAcessObject{
@@ -69,6 +71,7 @@ func Instance() (*DataAcessObject) {
 
 func (instance *DataAcessObject) DropAndCreateDatabase() {
     // Automatically delete previous database schema.
+    instance.dbPool.Debug().DropTableIfExists(&model.Receipt{})
     instance.dbPool.Debug().DropTableIfExists(&model.Product{})
     instance.dbPool.Debug().DropTableIfExists(&model.Store{})
     instance.dbPool.Debug().DropTableIfExists(&model.Organization{})
@@ -79,6 +82,7 @@ func (instance *DataAcessObject) DropAndCreateDatabase() {
     instance.dbPool.Debug().AutoMigrate(&model.Organization{})
     instance.dbPool.Debug().AutoMigrate(&model.Store{})
     instance.dbPool.Debug().AutoMigrate(&model.Product{})
+    instance.dbPool.Debug().AutoMigrate(&model.Receipt{})
 }
 
 func (instance *DataAcessObject) GetORM() (*gorm.DB) {

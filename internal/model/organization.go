@@ -33,6 +33,10 @@ type Organization struct {
     Products            []Product `gorm:"foreignkey:OrganizationID;"`
 }
 
+// Status
+// 1 = Active
+// 2 = Inactive
+
 // Give custom table name in our database.
 func (u Organization) TableName() string {
     return "cc_organizations"
