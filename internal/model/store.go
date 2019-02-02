@@ -5,14 +5,13 @@ import (
     _ "github.com/jinzhu/gorm"
 )
 
-//a struct to rep organization.
-type Organization struct {
+//a struct to rep organization's store.
+type Store struct {
     ID                  uint64 `gorm:"primary_key; AUTO_INCREMENT;"`
     Name                string `gorm:"not null; unique; size:255;"`
     Description         string `gorm:"size:1023;"`
     Email               string `gorm:"not null; unique; size:255;"`
-    Status              uint8 `gorm:"DEFAULT: 1;"`
-    OwnerID             uint64 `gorm:"index"`
+    Status              uint8 `gorm:"default: 1;"`
     StreetAddress       string `gorm:"size:127;"`
     StreetAddressExtra  string `gorm:"size:127;"`
     City                string `gorm:"size:127;"`
@@ -25,15 +24,12 @@ type Organization struct {
     Fax                 string `gorm:"size:10;"`
     CreatedAt           time.Time
     UpdatedAt           time.Time
-    Facebook            string `gorm:"size:255;"`
-    Twitter             string `gorm:"size:255;"`
-    YouTube             string `gorm:"size:255;"`
-    Google              string `gorm:"size:255;"`
-    Stores              []Store `gorm:"foreignkey:OrganizationID;index;"`
-    Products            []Store `gorm:"foreignkey:OrganizationID;index;"`
+    OrganizationID      uint64 `gorm:"index;"`
+    Employees           []User `gorm:"foreignkey:EmployeeInStoreID;"`
+    Products            []Product `gorm:"foreignkey:StoreID;"`
 }
 
 // Give custom table name in our database.
-func (u Organization) TableName() string {
-    return "cc_organizations"
+func (u Store) TableName() string {
+    return "cc_stores"
 }
