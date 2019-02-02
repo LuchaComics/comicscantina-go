@@ -5,6 +5,7 @@ import (
     _ "github.com/jinzhu/gorm"
 )
 
+//a struct to rep organization.
 type Organization struct {
     ID                  uint64 `gorm:"primary_key; AUTO_INCREMENT;"`
     Name                string `gorm:"not null; unique; size:255;"`
