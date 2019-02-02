@@ -32,8 +32,9 @@ func main() {
     // Load up our non-protected API endpoints. The following API endpoints
 	// can be accessed regardless of whether a JWT token was provided or not.
     r.Get("/", controller.HealthCheckFunc)
-	r.Post("/api/v1/register", controller.RegisterFunc)
-    r.Post("/api/v1/login", controller.LoginFunc)
+	r.Post("/api/v1/public/register", controller.RegisterFunc)
+    r.Post("/api/v1/public/login", controller.LoginFunc)
+    // r.Post("/api/v1/public/organizations", controller.ListPublicOrganizationsFunc)
 
 	// Load up our protected API endpoints. The following API endpoints can only
 	// be accessed with submission of a JWT token in the header.
@@ -53,7 +54,7 @@ func main() {
 
 		// API endpoints.
 		r.Get("/api/v1/profile", controller.ProfileRetrieveFunc)
-		r.Get("/api/v1/organizations", controller.ListOrganizationsFunc)
+		r.With(cc_middleware.PaginationCtx).Get("/api/v1/organizations", controller.ListOrganizationsFunc)
 		r.Post("/api/v1/organizations", controller.CreateOrganizationFunc)
 		r.With(controller.OrganizationCtx).Get("/api/v1/organization/{organizationID}", controller.RetrieveOrganizationFunc)
 	})

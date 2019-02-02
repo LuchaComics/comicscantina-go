@@ -32,12 +32,8 @@ func CreateOrganizationFunc(w http.ResponseWriter, r *http.Request) {
 
 
 func ListOrganizationsFunc(w http.ResponseWriter, r *http.Request) {
-    // Setup our variables for the paginator.
-    pageString := r.FormValue("page")
-    pageIndex, err := strconv.ParseUint(pageString, 10, 64)
-    if err != nil {
-        pageIndex = 0
-    }
+    // Extract from the context our URL parameter(s).
+    pageIndex := r.Context().Value("pageIndex").(uint64)
 
     organizations, _ := model_manager.OrganizationManagerInstance().AllByPageIndex(pageIndex)
     fmt.Println(organizations)
