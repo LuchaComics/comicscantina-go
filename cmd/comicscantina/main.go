@@ -63,10 +63,25 @@ func main() {
 		//--------------------------------------------------------------------//
 		//                           API endpoints                            //
 		//--------------------------------------------------------------------//
+
+		// User
 		r.Get("/api/v1/profile", controller.ProfileRetrieveFunc)
+
+		// Organizations
 		r.With(cc_middleware.PaginationCtx).Get("/api/v1/organizations", controller.ListOrganizationsFunc)
 		r.Post("/api/v1/organizations", controller.CreateOrganizationFunc)
 		r.With(controller.OrganizationCtx).Get("/api/v1/organization/{organizationID}", controller.RetrieveOrganizationFunc)
+
+		// Store
+		r.With(cc_middleware.PaginationCtx).Get("/api/v1/stores", controller.ListStoresFunc)
+		// r.Post("/api/v1/stores", controller.CreateStoreFunc)
+		// r.With(controller.StoreCtx).Get("/api/v1/store/{storeID}", controller.RetrieveStoreFunc)
+
+		// Product
+		//TODO: IMPLEMENT.
+
+		// Receipts
+		//TODO: IMPLEMENT.
 	})
 
 	http.ListenAndServe(":8080", r)
