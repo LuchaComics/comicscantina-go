@@ -1,10 +1,13 @@
 package controller
 
 import (
+    "context"
     "fmt"
     "net/http"
     "strconv"
+    "github.com/go-chi/chi"
 	"github.com/go-chi/render"
+    "github.com/luchacomics/comicscantina-go/internal/model"
 	"github.com/luchacomics/comicscantina-go/internal/model_manager"
     "github.com/luchacomics/comicscantina-go/internal/serializer"
 )
@@ -29,9 +32,6 @@ func CreateOrganizationFunc(w http.ResponseWriter, r *http.Request) {
 
 
 func ListOrganizationsFunc(w http.ResponseWriter, r *http.Request) {
-    // // Extract the current user from the request context.
-    // user := r.Context().Value("user").(*model.User)
-
     // Setup our variables for the paginator.
     pageString := r.FormValue("page")
     pageIndex, err := strconv.ParseUint(pageString, 10, 64)
@@ -50,6 +50,27 @@ func ListOrganizationsFunc(w http.ResponseWriter, r *http.Request) {
 }
 
 
+func OrganizationCtx(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var organization *model.Organization
+
+		if organizationIDString := chi.URLParam(r, "organizationID"); organizationIDString != "" {
+			organizationID, _ := strconv.ParseUint(organizationIDString, 10, 64)
+			organization, _ = model_manager.OrganizationManagerInstance().GetByID(organizationID)
+            ctx := context.WithValue(r.Context(), "organization", organization)
+    		next.ServeHTTP(w, r.WithContext(ctx))
+		}
+        render.Render(w, r, serializer.ErrNotFound)
+        return
+	})
+}
+
+
 func RetrieveOrganizationFunc(w http.ResponseWriter, r *http.Request) {
-    w.Write([]byte("TODO: Implement - Retrieve"))
+    organization := r.Context().Value("organization").(*model.Organization)
+
+	if err := render.Render(w, r, serializer.NewOrganizationResponse(organization)); err != nil {
+		render.Render(w, r, serializer.ErrRender(err))
+		return
+	}
 }
