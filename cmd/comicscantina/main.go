@@ -22,19 +22,21 @@ func init() {
 func main() {
 	r := chi.NewRouter()
 
-	// Load up our middleware.
+	// Load up our global middleware.
     r.Use(middleware.RequestID)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.URLFormat)
 	r.Use(render.SetContentType(render.ContentTypeJSON))
 
-    // Load up our API endpoints.
+    // Load up our non-protected API endpoints. The following API endpoints
+	// can be accessed regardless of whether a JWT token was provided or not.
     r.Get("/", controller.HealthCheckFunc)
 	r.Post("/api/v1/register", controller.RegisterFunc)
     r.Post("/api/v1/login", controller.LoginFunc)
 
-	// Protected routes
+	// Load up our protected API endpoints. The following API endpoints can only
+	// be accessed with submission of a JWT token in the header.
 	r.Group(func(r chi.Router) {
 		// Seek, verify and validate JWT tokens
 		r.Use(jwtauth.Verifier(service.GetJWTTokenAuthority()))
