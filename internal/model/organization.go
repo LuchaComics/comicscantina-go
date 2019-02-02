@@ -1,7 +1,7 @@
 package model
 
 import (
-    // "time"
+    "time"
     _ "github.com/jinzhu/gorm"
 )
 
@@ -17,11 +17,13 @@ type Organization struct {
     City                string `gorm:"size:127;"`
     Province            string `gorm:"size:127;"`
     Country             string `gorm:"size:127;"`
-    Currency            string  `gorm:"type:varchar(3)"`
+    Currency            string `gorm:"size:3;"`
     Language            string `gorm:"size:2;"`
     Website             string `gorm:"size:127;"`
     Phone               string `gorm:"size:10;"`
     Fax                 string `gorm:"size:10;"`
+    CreatedAt           time.Time
+    UpdatedAt           time.Time
 }
 
 // Give custom table name in our database.
