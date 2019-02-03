@@ -616,3 +616,64 @@ The API endpoint used to create a *Store* in Comics Cantina by an *authenticated
   ```
   $ http post 127.0.0.1:8080/api/v1/stores Authorization:"Bearer $COMICS_WS_API_TOKEN" name="Main Store" description="The brick and morter comics store." email="bart@mikasoftware.com" street_address="111-204 Infinite Loop Road" city="London" province="Ontario" country="Canada" organization_id=1
   ```
+
+
+## Retrieve Store
+Returns the *store* details. Only *authenticated users* which meet the following criteria are allowed to access this endpoint:
+
+  * *user* is the owner of the *organization*
+  * *user* is an employee of the *organization*
+
+It is important to note that if the *authenticated user* is staff member of [**Lucha Comics** ](https://luchacomics.com/) then they are automatically granted access.
+
+* **URL**
+
+  ``/api/v1/store/<store_id>``
+
+
+* **Method**
+
+  ``GET``
+
+
+* **URL Params**
+
+  None
+
+
+* **Data Params**
+
+  None
+
+
+* **Success Response**
+
+  * **Code:** 200
+  * **Content:**
+
+    ```
+    {
+        "city": "London",
+        "country": "Canada",
+        "description": "The company",
+        "email": "bart@mikasoftware.com",
+        "id": 1,
+        "name": "Mika Software",
+        "owner_id": 1,
+        "province": "Ontario",
+        "status": 1,
+        "street_address": "111-204 Infinite Loop Road"
+    }
+    ```
+
+
+* **Error Response**
+
+  * None
+
+
+* **Sample Call**
+
+  ```
+  $ http get 127.0.0.1:8080/api/v1/store/1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
+  ```
