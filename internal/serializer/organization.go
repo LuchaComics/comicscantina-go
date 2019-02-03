@@ -148,6 +148,16 @@ type OrganizationRequest struct {
 
 // Function will validate the input payload.
 func (data *OrganizationRequest) Bind(r *http.Request) error {
+    // Extract the current user from the request context.
+    user := r.Context().Value("user").(*model.User)
+
+    // Perform our validation below...
+    if user.OrganizationID != 0 {
+        return errors.New("Cannot create organization because you have already created an organization. You are allowed to only have one organization per account.")
+    }
+    if user.EmployerID != 0 {
+        return errors.New("Cannot create organization because you are an employee. Please create a new account if you want to create an organization.")
+    }
     if data.Name == "" {
         return errors.New("Missing name.")
     }

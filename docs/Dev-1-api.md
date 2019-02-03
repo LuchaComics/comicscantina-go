@@ -358,12 +358,36 @@ Once an *organization* has been created, the staff of [**Lucha Comics** ](https:
   * **Code:** 400
   * **Content:**
 
-  ```
-  {
-      "error": "Name is not unique.",
-      "status": "Invalid request."
-  }
-  ```
+    ```
+    {
+        "error": "Name is not unique.",
+        "status": "Invalid request."
+    }
+    ```
+
+  OR
+
+  * **Code:** 400
+  * **Content:**
+
+    ```
+    {
+        "error": "Cannot create organization because you have already created an organization. You are allowed to only have one organization per account.",
+        "status": "Invalid request."
+    }
+    ```
+
+  OR
+
+  * **Code:** 400
+  * **Content:**
+
+    ```
+    {
+        "error": "Cannot create organization because you are an employee. Please create a new account if you want to create an organization.",
+        "status": "Invalid request."
+    }
+    ```
 
 
 * **Sample Call**
