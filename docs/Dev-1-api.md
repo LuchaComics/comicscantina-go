@@ -293,24 +293,29 @@ Returns paginated list of all the *organizations* which have been approved by th
 
 
 ## Create Organization
-The API endpoint used to create an *Organization* in Comics Cantina by an *authenticated user*.
+Creates an *organization* by an *authenticated user* in our system. Please note the following rules:
 
-  * **URL**
+* *User* is able to create only a single *organization* and cannot create anymore.
+* *User* cannot be an employee of an *organization*.
 
-    ``/api/v1/organizations``
+Once an *organization* has been created, the staff of [**Lucha Comics** ](https://luchacomics.com/) must approve the *organization* before it becomes publicly viewable on Comics Cantina.
 
+* **URL**
 
-  * **Method**
-
-    ``POST``
-
-
-  * **URL Params**
-
-      None
+  ``/api/v1/organizations``
 
 
-  * **Data Params**
+* **Method**
+
+  ``POST``
+
+
+* **URL Params**
+
+  None
+
+
+* **Data Params**
 
     * name
     * description
@@ -327,45 +332,45 @@ The API endpoint used to create an *Organization* in Comics Cantina by an *authe
     * fax - optional
 
 
-  * **Success Response**
+* **Success Response**
 
-      * **Code:** 200
-      * **Content:**
-
-      ```
-      {
-          "city": "London",
-          "country": "Canada",
-          "description": "The company",
-          "email": "bart@mikasoftware.com",
-          "id": 1,
-          "name": "Mika Software",
-          "owner_id": 1,
-          "province": "Ontario",
-          "status": 1,
-          "street_address": "111-204 Infinite Loop Road"
-      }
-      ```
-
-
-  * **Error Response**
-
-    * **Code:** 400
-    * **Content:**
+  * **Code:** 200
+  * **Content:**
 
     ```
     {
-        "error": "Name is not unique.",
-        "status": "Invalid request."
+        "city": "London",
+        "country": "Canada",
+        "description": "The company",
+        "email": "bart@mikasoftware.com",
+        "id": 1,
+        "name": "Mika Software",
+        "owner_id": 1,
+        "province": "Ontario",
+        "status": 1,
+        "street_address": "111-204 Infinite Loop Road"
     }
     ```
 
 
-  * **Sample Call**
+* **Error Response**
 
-      ```
-      $ http post 127.0.0.1:8080/api/v1/organizations Authorization:"Bearer $COMICS_WS_API_TOKEN" name="Mika Software" description="The company" email="bart@mikasoftware.com" street_address="111-204 Infinite Loop Road" city="London" province="Ontario" country="Canada"
-      ```
+  * **Code:** 400
+  * **Content:**
+
+  ```
+  {
+      "error": "Name is not unique.",
+      "status": "Invalid request."
+  }
+  ```
+
+
+* **Sample Call**
+
+  ```
+  $ http post 127.0.0.1:8080/api/v1/organizations Authorization:"Bearer $COMICS_WS_API_TOKEN" name="Mika Software" description="The company" email="bart@mikasoftware.com" street_address="111-204 Infinite Loop Road" city="London" province="Ontario" country="Canada"
+  ```
 
 
 ## List Organizations

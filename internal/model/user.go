@@ -11,8 +11,8 @@ type User struct {
     PasswordHash      string `gorm:"size:511`
     FirstName         string `gorm:"type:varchar(127)”`
     LastName          string `gorm:"type:varchar(127)”`
-    Organizations     []Organization `gorm:"foreignkey:OwnerID"`
-    OrganizationID    uint64 `gorm:"index;"`
+    EmployerID        uint64 `gorm:"index;"` // ID of organization this user is an employee of.
+    OrganizationID    uint64 `gorm:"index;"` // ID of organization this user owns
     Receipts          []Receipt `gorm:"foreignkey:OwnerID"`
 }
 

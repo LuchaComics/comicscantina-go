@@ -12,7 +12,7 @@ type Organization struct {
     Description         string `gorm:"size:1023;"`
     Email               string `gorm:"not null; size:255;"`
     Status              uint8 `gorm:"DEFAULT: 1;"`
-    OwnerID             uint64 `gorm:"index"`
+    Owner               User `gorm:"foreignkey:OrganizationID;"`
     StreetAddress       string `gorm:"size:127;"`
     StreetAddressExtra  string `gorm:"size:127;"`
     City                string `gorm:"size:127;"`
@@ -29,7 +29,7 @@ type Organization struct {
     Twitter             string `gorm:"size:255;"`
     YouTube             string `gorm:"size:255;"`
     Google              string `gorm:"size:255;"`
-    Employees           []User `gorm:"foreignkey:OrganizationID;"`
+    Employees           []User `gorm:"foreignkey:EmployerID;"`
     Stores              []Store `gorm:"foreignkey:OrganizationID;"`
     Products            []Product `gorm:"foreignkey:OrganizationID;"`
 }
