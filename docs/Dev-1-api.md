@@ -1,17 +1,19 @@
 Comics Cantina API Reference
 ======
 
-## Developers Note
+## Developers Notes
 
-To help make the next few API endpoints easy to type, save your token to the console.
+1. To help make the next few API endpoints easy to type, save your token to the console.
 
-```
-COMICS_WS_API_TOKEN='YOUR_TOKEN'
-```
+  ```
+  COMICS_WS_API_TOKEN='YOUR_TOKEN'
+  ```
+
+2. You will notice ``http`` used in the sample calls through this document, this is the ``Python`` command line application called ``HTTPie``. Download the command line application by following [these instructions](https://httpie.org/).
 
 
 ## Get API Version
-Returns the version information.
+Returns the version information of Comics Cantina. This is a usefull endpoint to call when you are setting up your project and you want to confirm you are able to communicate with the web-service.
 
 * **URL**
 
@@ -36,7 +38,14 @@ Returns the version information.
 * **Success Response**
 
   * **Code:** 200
-  * **Content:** ``{"Service": `"v0.1", "API: 'v1'"}``
+  * **Content:**
+
+    ```
+    {
+        "Service": "v0.1",
+        "API: 'v1"
+    }
+    ```
 
 
 * **Error Response**
