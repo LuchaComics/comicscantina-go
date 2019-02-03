@@ -8,10 +8,10 @@ Please run the following commands as the ``lucha`` user account.
 1. Clone the project.
 
     ```
-    $ mkdir /opt/lucha/go/src;
-    $ cd /opt/lucha/go/src;
-    $ git clone https://github.com/LuchaComics/comicscantina-data.git
-    $ cd comicscantina-data
+    $ mkdir /opt/lucha/go/src/github.com/luchacomics;
+    $ cd /opt/lucha/go/src/github.com/luchacomics;
+    $ git clone https://github.com/LuchaComics/comicscantina-go.git
+    $ cd comicscantina-go
     ```
 
 2. Install the dependencies.
@@ -38,13 +38,13 @@ Please run the following commands as the ``lucha`` user account.
 
    ```
    $ cd /opt/lucha/go/src;
-   $ go install comicscantina-data;
+   $ go install comicscantina-go;
    ```
 
 6. Enable permission and security while you are a ``techops`` user.
 
     ```
-    $ sudo setcap 'cap_net_bind_service=+ep' /opt/lucha/go/bin/comicscantina-data
+    $ sudo setcap 'cap_net_bind_service=+ep' /opt/lucha/go/bin/comicscantina-go
     $ sudo setsebool -P httpd_can_network_connect 1
     $ sudo semanage permissive -a httpd_t
     $ sudo chcon -Rt httpd_sys_content_t /opt/django/workery-django/workery/static
@@ -86,7 +86,7 @@ Please run the following commands as the ``techops`` user account.
 4. Run your go app manually.
 
     ```
-    # go run comicscantina-data
+    # go run comicscantina-go
     ```
 
 5. Now in your browser go to ``http://SERVER_DOMAIN_NAME_OR_IP`` and you should see the app!
@@ -104,7 +104,7 @@ This section explains how to integrate our project with ``systemd`` so our opera
 2. While you are logged in as a ``techops`` user, please write the following into the console.
 
     ```
-    $ sudo vi /etc/systemd/system/comicscantina-data.service
+    $ sudo vi /etc/systemd/system/comicscantina-go.service
     ```
 
 3. Implement
@@ -119,7 +119,7 @@ This section explains how to integrate our project with ``systemd`` so our opera
     Type=simple
     DynamicUser=yes
     WorkingDirectory=/opt/lucha/go/bin
-    ExecStart=/opt/lucha/go/bin/comicscantina-data
+    ExecStart=/opt/lucha/go/bin/comicscantina-go
     Restart=always
     RestartSec=3
     SyslogIdentifier=comicscantina_data
@@ -131,7 +131,7 @@ This section explains how to integrate our project with ``systemd`` so our opera
 4. Grant access.
 
    ```
-   $ sudo chmod 755 /etc/systemd/system/comicscantina-data.service
+   $ sudo chmod 755 /etc/systemd/system/comicscantina-go.service
    ```
 
 5. (Optional) If you've updated the above, you will need to run the following before proceeding.
@@ -143,15 +143,15 @@ This section explains how to integrate our project with ``systemd`` so our opera
 6. We can now start the Gunicorn service we created and enable it so that it starts at boot:
 
     ```
-    $ sudo systemctl start comicscantina-data
-    $ sudo systemctl enable comicscantina-data
+    $ sudo systemctl start comicscantina-go
+    $ sudo systemctl enable comicscantina-go
     ```
 
 7. Confirm our service is running.
 
     ```
-    $ systemctl status comicscantina-data.service
-    $ journalctl -f -u comicscantina-data.service
+    $ systemctl status comicscantina-go.service
+    $ journalctl -f -u comicscantina-go.service
     ```
 
 8. And verify the URL works in the browser.

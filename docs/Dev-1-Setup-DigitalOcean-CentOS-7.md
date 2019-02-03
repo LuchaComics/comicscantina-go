@@ -388,37 +388,37 @@ The following instructions where adapted from  [DigitalOcean](https://www.digita
 1. Start by moving into a writable directory:
 
     ```
-    cd /tmp
+    $ cd /tmp
     ```
 
 2. Use the curl command and the link from Go to download the tarball:
 
     ```
-    curl -LO https://storage.googleapis.com/golang/go1.11.linux-amd64.tar.gz
+    $ curl -LO https://storage.googleapis.com/golang/go1.11.5.linux-amd64.tar.gz
     ```
 
 3. Confirm our download is valid.
 
     ```
-    # shasum -a 256 go1.11*.tar.gz
+    $ shasum -a 256 go1.11*.tar.gz
     ```
 
 4. Install go.
 
     ```
-    # tar -C /usr/local -xvzf go1.11.linux-amd64.tar.gz
+    $ sudo tar -C /usr/local -xvzf go1.11.5.linux-amd64.tar.gz
     ```
 
 5. Setup our go folders.
 
     ```
-    # mkdir -p ~/go/{bin,pkg,src}
+    $ mkdir -p ~/go/{bin,pkg,src}
     ```
 
 6. Enable `Go` in your paths.
 
     ```
-    #  vi /etc/profile.d/path.sh
+    $ sudo vi /etc/profile.d/path.sh
     ```
 
 7. Append the following to the file.
@@ -430,7 +430,7 @@ The following instructions where adapted from  [DigitalOcean](https://www.digita
 8. Open this file.
 
     ```
-    vi ~/.bash_profile
+    $ sudo vi ~/.bash_profile
     ```
 
 9. Append the following:
@@ -443,7 +443,7 @@ The following instructions where adapted from  [DigitalOcean](https://www.digita
 10. Apply your changes.
 
     ```
-    source /etc/profile && source ~/.bash_profile
+    $ source /etc/profile && source ~/.bash_profile
     ```
 
 #### Confirmation
@@ -451,7 +451,7 @@ The following instructions where adapted from  [DigitalOcean](https://www.digita
 1. Create our new file.
 
     ```
-    vi ~/go/src/hello.go
+    $ vi ~/go/src/hello.go
     ```
 
 2. Set the following content:
@@ -469,13 +469,13 @@ The following instructions where adapted from  [DigitalOcean](https://www.digita
 3. Run our installation.
 
     ```
-    # go install $GOPATH/hello.go
+    $ go install $GOPATH/src/hello.go
     ```
 
 4. Run.
 
     ```
-    $GOBIN/hello
+    $ $GOBIN/hello
     ```
 
 
@@ -483,19 +483,19 @@ The following instructions where adapted from  [DigitalOcean](https://www.digita
 1. Create a services user for the application:
 
     ```
-    sudo groupadd --system lucha;
-    sudo useradd --system --gid lucha --shell /bin/bash --home /opt/lucha lucha;
+    $ sudo groupadd --system lucha;
+    $ sudo useradd --system --gid lucha --shell /bin/bash --home /opt/lucha lucha;
 
 2. Create the Django project home inside ``/opt``:
 
     ```
-    sudo mkdir /opt/lucha
+    $ sudo mkdir /opt/lucha
     ```
 
 3. Give the permissions to the ``lucha`` user:
 
     ```
-    sudo chown lucha:lucha /opt/lucha
+    $ sudo chown lucha:lucha /opt/lucha
     ```
 
 4. Go into our new user. Note: ``sudo`` is to elevate privilege and ``su`` to switch users.
