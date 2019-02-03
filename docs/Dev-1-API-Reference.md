@@ -519,6 +519,10 @@ It is important to note that if the *authenticated user* is staff member of [**L
   $ http get 127.0.0.1:8080/api/v1/organization/1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
 
+## Update Organization
+
+**TODO: IMPLEMENT**
+
 
 ## List Stores
 Returns paginated list of all the *stores* that meet any of these criteria for the *authenticated user* that made the call:
@@ -712,3 +716,8 @@ It is important to note that if the *authenticated user* is staff member of [**L
   ```
   $ http get 127.0.0.1:8080/api/v1/store/1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
+
+
+## Update Store
+
+**TODO: IMPLEMENT**
