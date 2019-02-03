@@ -15,7 +15,8 @@ Comics Cantina API Reference
 
 
 ## Get API Version
-Returns the version information of Comics Cantina. This is a usefull endpoint to call when you are setting up your project and you want to confirm you are able to communicate with the web-service.
+Returns the version information of Comics Cantina. This is a useful endpoint to call when you are setting up your project and you want to confirm you are able to communicate with the web-service.
+
 
 * **URL**
 
@@ -63,7 +64,11 @@ Returns the version information of Comics Cantina. This is a usefull endpoint to
 
 
 ## Register
-Registers the user account with our system.
+Submit registration details into our system to automatically create a *user* account. System return the *user* details and authentication *token*.
+
+Created *user* accounts are automatically granted access to the system even though these accounts have not had their email verified. The system sends a verification email after creation and if the *user* does not verify in the allotted timespan, their account gets locked.
+
+It's important to note that emails must be unique and passwords strong or else validation errors get returned.
 
 * **URL**
 
@@ -125,7 +130,7 @@ Registers the user account with our system.
 
 
 ## Login
-Returns the user profile and authentication token upon successful login in.
+Returns the *user profile* and authentication *token* upon successful login in.
 
 * **URL**
 
@@ -186,7 +191,7 @@ Returns the user profile and authentication token upon successful login in.
 
 ## Get Profile
 The API endpoint used to get the *user profile details*. Only the *profile* of the
-authenticated user is returned.
+*authenticated user* is returned.
 
 * **URL**
 
@@ -373,7 +378,7 @@ It is important to note that if the *authenticated user* is staff member of [**L
 
 * **URL**
 
-  ``/api/v1/public/organizations``
+  ``/api/v1/organizations``
 
 
 * **Method**
@@ -419,93 +424,134 @@ It is important to note that if the *authenticated user* is staff member of [**L
   ```
 
 
+## List Stores
+Returns paginated list of all the *stores* that meet any of these criteria for the *authenticated user* that made the call:
+
+  * *user* is the owner of the *organization*
+  * *user* is an employee of the *organization*
+
+It is important to note that if the *authenticated user* is staff member of [**Lucha Comics** ](https://luchacomics.com/) then all *organizations* get listed regardless of membership or status.
+
+* **URL**
+
+  ``/api/v1/stores``
 
 
+* **Method**
+
+  ``GET``
 
 
+* **URL Params**
+
+  * page
 
 
+* **Data Params**
 
-# ---------------------------------------
-# TODO: PLEASE IMPLEMENT & FIX BELOW
-# ---------------------------------------
-
+  None
 
 
+* **Success Response**
 
-## Organization - List
-### Description
+  * **Code:** 200
+  * **Content:**
+
+    ```
+    [
+        {
+            "description": "The company",
+            "id": 1,
+            "name": "Mika Software Corporation"
+        }
+    ]
+    ```
+
+
+* **Error Response**
+
+  * None
+
+
+* **Sample Call**
 
   ```
-  /api/v1/organizations
+  $ http get 127.0.0.1:8080/api/v1/organizations?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
 
-The API endpoint used to list the organizations.
 
-### Example Command
+## Create Store
+The API endpoint used to create a *Store* in Comics Cantina by an *authenticated user* belongoing to a specific *Organization*.
 
-  ```
-  http get 127.0.0.1:8080/api/v1/organizations Authorization:"Bearer $COMICS_WS_API_TOKEN"
-  ```
+* **URL**
 
-### Example Output
+  ``/api/v1/organizations``
+
+
+* **Method**
+
+  ``POST``
+
+
+* **URL Params**
+
+  None
+
+
+* **Data Params**
+
+  * organization_id
+  * name
+  * description
+  * email
+  * street_address
+  * street_address_extra
+  * city
+  * province
+  * country
+  * currency - optional
+  * language - optional
+  * website - optional
+  * phone - optional
+  * fax - optional
+
+
+* **Success Response**
+
+  * **Code:** 200
+  * **Content:**
 
   ```
   {
+      "city": "London",
+      "country": "Canada",
       "description": "The company",
       "email": "bart@mikasoftware.com",
-      "id": 3,
+      "id": 1,
       "name": "Mika Software",
-      "owner_id": 1
-  }
-  ```
+      "owner_id": 1,
+      "province": "Ontario",
+      "status": 1,
+      "street_address": "111-204 Infinite Loop Road"
+    }
+    ```
 
 
+* **Error Response**
+
+  * **Code:** 400
+  * **Content:**
+
+    ```
+    {
+      "error": "Name is not unique.",
+      "status": "Invalid request."
+    }
+    ```
 
 
-## Stores - List
-### Description
-
-  ```
-  /api/v1/stores
-  ```
-
-The API endpoint used to list the stores in the system.
-
-### Example Command
-
-  ```
-  http get 127.0.0.1:8080/api/v1/stores Authorization:"Bearer $COMICS_WS_API_TOKEN"
-  ```
-
-### Example Output
-
-  ```
-  {
-    "description": "The company",
-    "email": "bart@mikasoftware.com",
-    "id": 3,
-    "name": "Mika Software",
-    "owner_id": 1
-  }
-  ```
-
-## Organization - Create
-### Description
+* **Sample Call**
 
   ```
-  /api/v1/organizations
-  ```
-
-The API endpoint used to create the organization.
-
-### Example Command
-
-  ```
-  http post 127.0.0.1:8080/api/v1/stores Authorization:"Bearer $COMICS_WS_API_TOKEN" name="Main Store" description="The brick and morter comics store." email="bart@mikasoftware.com" street_address="111-204 Infinite Loop Road" city="London" province="Ontario" country="Canada" organization_id=1
-  ```
-
-### Example Output
-
-  ```
+  $ http post 127.0.0.1:8080/api/v1/stores Authorization:"Bearer $COMICS_WS_API_TOKEN" name="Main Store" description="The brick and morter comics store." email="bart@mikasoftware.com" street_address="111-204 Infinite Loop Road" city="London" province="Ontario" country="Canada" organization_id=1
   ```
