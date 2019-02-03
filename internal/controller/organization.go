@@ -84,6 +84,17 @@ func OrganizationCtx(next http.Handler) http.Handler {
 			organizationID, _ := strconv.ParseUint(organizationIDString, 10, 64)
 			organization, count := model_manager.OrganizationManagerInstance().GetByID(organizationID)
             if count == 1 {
+
+                // Confirm the authenticated user is either:
+                // (a) Staff
+                // (b) Owner of
+                // (c) Employee
+                user := r.Context().Value("user").(*model.User)
+                if organization.ID != user.OrganizationID && organization.ID != user.EmployerID && user.GroupID != 2 {
+                    render.Render(w, r, serializer.ErrNotFound)
+                }
+
+                // Attach the organization to the context.
                 ctx := context.WithValue(r.Context(), "organization", organization)
         		next.ServeHTTP(w, r.WithContext(ctx))
             }
