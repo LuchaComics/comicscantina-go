@@ -444,7 +444,12 @@ Returns paginated list of all the *organizations* if the *authenticated user* is
 
 * **Error Response**
 
-  * None
+  * **Code:** 401
+  * **Content:**
+
+    ```
+    You are not a staff member.
+    ```
 
 
 * **Sample Call**
