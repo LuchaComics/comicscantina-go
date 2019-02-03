@@ -11,6 +11,8 @@ Comics Cantina API Reference
 
 2. You will notice ``http`` used in the sample calls through this document, this is the ``Python`` command line application called ``HTTPie``. Download the command line application by following [these instructions](https://httpie.org/).
 
+3. If you are going to contribute to this file, please make sure it follows the following [API documentation standard](https://gist.github.com/iros/3426278).
+
 
 ## Get API Version
 Returns the version information of Comics Cantina. This is a usefull endpoint to call when you are setting up your project and you want to confirm you are able to communicate with the web-service.
