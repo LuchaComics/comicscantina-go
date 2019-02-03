@@ -185,7 +185,7 @@ Returns the user profile and authentication token upon successful login in.
 
 
 ## Get Profile
-The API endpoint used to get the user profile. Only the profile of the
+The API endpoint used to get the *user profile details*. Only the *profile* of the
 authenticated user is returned.
 
 * **URL**
@@ -237,7 +237,7 @@ authenticated user is returned.
 
 
 ## List Public Organizations
-Returns paginated list of all the organizations which have been approved by the staff of [**Lucha Comics** ](https://luchacomics.com/) for public viewing. Anonymous users are granted permission to make calls to this endpoint.
+Returns paginated list of all the *organizations* which have been approved by the staff of [**Lucha Comics** ](https://luchacomics.com/) for public viewing. Anonymous users are granted permission to make calls to this endpoint.
 
 * **URL**
 
@@ -287,9 +287,136 @@ Returns paginated list of all the organizations which have been approved by the 
   ```
 
 
+## Create Organization
+The API endpoint used to create an *Organization* in Comics Cantina by an *authenticated user*.
+
+  * **URL**
+
+    ``/api/v1/organizations``
 
 
+  * **Method**
 
+    ``POST``
+
+
+  * **URL Params**
+
+      None
+
+
+  * **Data Params**
+
+    * name
+    * description
+    * email
+    * street_address
+    * street_address_extra
+    * city
+    * province
+    * country
+    * currency - optional
+    * language - optional
+    * website - optional
+    * phone - optional
+    * fax - optional
+
+
+  * **Success Response**
+
+      * **Code:** 200
+      * **Content:**
+
+      ```
+      {
+          "city": "London",
+          "country": "Canada",
+          "description": "The company",
+          "email": "bart@mikasoftware.com",
+          "id": 1,
+          "name": "Mika Software",
+          "owner_id": 1,
+          "province": "Ontario",
+          "status": 1,
+          "street_address": "111-204 Infinite Loop Road"
+      }
+      ```
+
+
+  * **Error Response**
+
+    * **Code:** 400
+    * **Content:**
+
+    ```
+    {
+        "error": "Name is not unique.",
+        "status": "Invalid request."
+    }
+    ```
+
+
+  * **Sample Call**
+
+      ```
+      $ http post 127.0.0.1:8080/api/v1/organizations Authorization:"Bearer $COMICS_WS_API_TOKEN" name="Mika Software" description="The company" email="bart@mikasoftware.com" street_address="111-204 Infinite Loop Road" city="London" province="Ontario" country="Canada"
+      ```
+
+
+## List Organizations
+Returns paginated list of all the *organizations* that meet any of these criteria for the *authenticated user* that made the call:
+
+  * *user* is the owner of the *organization*
+  * *user* is an employee of the *organization*
+
+It is important to note that if the *authenticated user* is staff member of [**Lucha Comics** ](https://luchacomics.com/) then all *organizations* get listed regardless of membership or status.
+
+* **URL**
+
+  ``/api/v1/public/organizations``
+
+
+* **Method**
+
+  ``GET``
+
+
+* **URL Params**
+
+  * page
+
+
+* **Data Params**
+
+  None
+
+
+* **Success Response**
+
+  * **Code:** 200
+  * **Content:**
+
+    ```
+    [
+        {
+            "description": "The company",
+            "id": 1,
+            "name": "Mika Software Corporation"
+        }
+    ]
+    ```
+
+
+* **Error Response**
+
+  * None
+
+
+* **Sample Call**
+
+  ```
+  $ http get 127.0.0.1:8080/api/v1/organizations?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
+  ```
 
 
 
@@ -333,37 +460,6 @@ The API endpoint used to list the organizations.
   }
   ```
 
-## Organization - Create
-### Description
-
-  ```
-  /api/v1/organizations
-  ```
-
-The API endpoint used to create the organization.
-
-### Example Command
-
-  ```
-  http post 127.0.0.1:8080/api/v1/organizations Authorization:"Bearer $COMICS_WS_API_TOKEN" name="Mika Software" description="The company" email="bart@mikasoftware.com" street_address="111-204 Infinite Loop Road" city="London" province="Ontario" country="Canada"
-  ```
-
-### Example Output
-
-  ```
-  {
-      "city": "London",
-      "country": "Canada",
-      "description": "The company",
-      "email": "bart@mikasoftware.com",
-      "id": 1,
-      "name": "Mika Software",
-      "owner_id": 1,
-      "province": "Ontario",
-      "status": 1,
-      "street_address": "111-204 Infinite Loop Road"
-  }
-  ```
 
 
 
