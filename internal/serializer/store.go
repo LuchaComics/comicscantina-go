@@ -49,7 +49,7 @@ func (data *StoreDetailRequest) Bind(r *http.Request) error {
     // Check to see if the authenticated user belongs to this organization.
     has_membership := model_manager.OrganizationManagerInstance().UserIsMemberOf(user.ID, data.OrganizationID)
     if has_membership == false {
-        return errors.New("organization_id is invalid - either does not exist or you are not a member of it.")
+        return errors.New("`organization_id` is invalid - either does not exist or you are not a member of it.")
     }
     if data.Email == "" {
         return errors.New("Missing email.")

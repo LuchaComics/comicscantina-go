@@ -537,7 +537,7 @@ It is important to note that if the *authenticated user* is staff member of [**L
 * **Sample Call**
 
   ```
-  $ http get 127.0.0.1:8080/api/v1/organizations?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
+  $ http get 127.0.0.1:8080/api/v1/stores?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
 
 
@@ -586,16 +586,16 @@ The API endpoint used to create a *Store* in Comics Cantina by an *authenticated
   {
       "city": "London",
       "country": "Canada",
-      "description": "The company",
+      "description": "The brick and morter comics store.",
       "email": "bart@mikasoftware.com",
       "id": 1,
-      "name": "Mika Software",
-      "owner_id": 1,
+      "name": "Main Store",
+      "organization_id": 1,
       "province": "Ontario",
       "status": 1,
       "street_address": "111-204 Infinite Loop Road"
-    }
-    ```
+  }
+  ```
 
 
 * **Error Response**
@@ -605,7 +605,7 @@ The API endpoint used to create a *Store* in Comics Cantina by an *authenticated
 
     ```
     {
-      "error": "Name is not unique.",
+      "error": "`organization_id` is invalid - either does not exist or you are not a member of it.",
       "status": "Invalid request."
     }
     ```
