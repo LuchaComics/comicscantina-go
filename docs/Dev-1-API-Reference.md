@@ -462,8 +462,8 @@ Returns paginated list of all the *organizations* if the *authenticated user* is
 ## Retrieve Organization
 Returns the *organization* details. Only *authenticated users* which meet the following criteria are allowed to access this endpoint:
 
-    * *user* is the owner of the *organization*
-    * *user* is an employee of the *organization*
+  * *user* is the owner of the *organization*
+  * *user* is an employee of the *organization*
 
 It is important to note that if the *authenticated user* is staff member of [**Lucha Comics** ](https://luchacomics.com/) then they are automatically granted access.
 
