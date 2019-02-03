@@ -393,17 +393,18 @@ Once an *organization* has been created, the staff of [**Lucha Comics** ](https:
 * **Sample Call**
 
   ```
-  $ http post 127.0.0.1:8080/api/v1/organizations Authorization:"Bearer $COMICS_WS_API_TOKEN" name="Mika Software" description="The company" email="bart@mikasoftware.com" street_address="111-204 Infinite Loop Road" city="London" province="Ontario" country="Canada"
+  $ http post 127.0.0.1:8080/api/v1/organizations \
+    Authorization:"Bearer $COMICS_WS_API_TOKEN" \
+    name="Mika Software" \
+    description="The company" \
+    email="bart@mikasoftware.com" \
+    street_address="111-204 Infinite Loop Road" \
+    city="London" province="Ontario" country="Canada"
   ```
 
 
 ## List Organizations
-Returns paginated list of all the *organizations* that meet any of these criteria for the *authenticated user* that made the call:
-
-  * *user* is the owner of the *organization*
-  * *user* is an employee of the *organization*
-
-It is important to note that if the *authenticated user* is staff member of [**Lucha Comics** ](https://luchacomics.com/) then all *organizations* get listed regardless of membership or status.
+Returns paginated list of all the *organizations* if the *authenticated user* is a staff member of [**Lucha Comics** ](https://luchacomics.com/).
 
 * **URL**
 

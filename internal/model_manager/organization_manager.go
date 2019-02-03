@@ -48,14 +48,6 @@ func (manager *OrganizationManager) GetByName(name string) (*model.Organization,
     return &org, count
 }
 
-func (manager *OrganizationManager) GetByOwnerID(owner_id uint64) (*model.Organization, uint64) {
-    orm := manager.dao.GetORM() // Get our database layer.
-    var org model.Organization // The model we will be returning.
-    var count uint64
-    orm.Where("owner = ?", owner_id).First(&org).Count(&count) // Find our user.
-    return &org, count
-}
-
 func (manager *OrganizationManager) AllByPageIndex(pageIndex uint64) ([]model.Organization, uint64) {
     orm := manager.dao.GetORM() // Get our database layer.
 

@@ -69,7 +69,7 @@ func main() {
 		r.Get("/api/v1/profile", controller.ProfileRetrieveFunc)
 
 		// Organizations
-		r.With(cc_mw.PaginationCtx).Get("/api/v1/organizations", controller.ListOrganizationsFunc)
+		r.With(cc_mw.PaginationCtx).With(cc_mw.StaffCtx).Get("/api/v1/organizations", controller.ListOrganizationsFunc)
 		r.Post("/api/v1/organizations", controller.CreateOrganizationFunc)
 		r.With(controller.OrganizationCtx).Get("/api/v1/organization/{organizationID}", controller.RetrieveOrganizationFunc)
 
