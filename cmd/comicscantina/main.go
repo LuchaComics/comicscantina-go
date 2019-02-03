@@ -35,7 +35,7 @@ func main() {
     // Load up our non-protected API endpoints. The following API endpoints   //
 	// can be accessed regardless of whether a JWT token was provided or not. //
 	//------------------------------------------------------------------------//
-    r.Get("/", controller.HealthCheckFunc)
+    r.Get("/api/v1/public/version", controller.HealthCheckFunc)
 	r.Post("/api/v1/public/register", controller.RegisterFunc)
     r.Post("/api/v1/public/login", controller.LoginFunc)
 

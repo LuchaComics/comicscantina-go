@@ -1,112 +1,234 @@
-# API Reference
-## Health Status API
+Comics Cantina API Reference
+======
 
-### URL
-### Description
-Returns a status of the API endpoint.
+## Developers Note
 
-  ```
-  /
-  ```
+To help make the next few API endpoints easy to type, save your token to the console.
 
-### Example Command
+```
+COMICS_WS_API_TOKEN='YOUR_TOKEN'
+```
 
-  ```
-  http get 127.0.0.1:8080/
-  ```
 
-### Example Output
+## Get API Version
+Returns the version information.
 
-  ```
-  {
-      "Details": "Welcome to the ComicsCantina backend API, build v0.0.001.0"
-  }
-  ```
+* **URL**
+
+  `/api/v1/public/version`
+
+
+* **Method**
+
+  `GET`
+
+
+* **URL Params**
+
+  None
+
+
+* **Data Params**
+
+  None
+
+
+* **Success Response**
+
+  * **Code:** 200
+  * **Content:** ``{"Service": `"v0.1", "API: 'v1'"}``
+
+
+* **Error Response**
+
+  * None
+
+
+* **Sample Call**
+
+  ``
+  $ http get 127.0.0.1:8080/api/v1/public/version
+  ``
+
 
 ## Register
-### Description
 Registers the user account with our system.
 
-  ```
-  /api/v1/public/register
-  ````
+* **URL**
 
-### Example Command
+  ``/api/v1/public/register``
+
+
+* **Method**
+
+  `POST`
+
+
+* **URL Params**
+
+  None
+
+
+* **Data Params**
+
+  * email
+  * password
+  * first_name
+  * last_name
+
+
+* **Success Response**
+
+  * **Code:** 200
+  * **Content:**
+
+    ```
+    {
+        "email": "bart@mikasoftware.com",
+        "first_name": "Bart",
+        "last_name": "Mika",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDkyOTY1MDAsInVzZXJfaWQiOjF9.QN9dyWL2dlxKgkm0xbQAmnaI6_4amHcSfqUGQ6pZbxM",
+        "user_id": 1
+    }
+    ```
+
+
+* **Error Response**
+
+  * **Code:** 400
+  * **Content:**
+
+    ```
+    {
+        "error": "Email is not unique.",
+        "status": "Invalid request."
+    }
+    ```
+
+
+* **Sample Call**
 
   ```
-  http post 127.0.0.1:8080/api/v1/public/register email=bart@mikasoftware.com password=123password first_name=Bart last_name=Mika
+  $ http post 127.0.0.1:8080/api/v1/public/register email=bart@mikasoftware.com password=123password first_name=Bart last_name=Mika
   ```
 
-### Example Output
-
-  ```
-  {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDkwNzA1MzUsInVzZXJfaWQiOjF9.S13lwn4lSHMNCSi2D0bbDNjNNKcjnTLGvBrzbFWNZDw"
-  }
-  ```
-
-### Notes:
-To help make the next few API endpoints easy to type, save your token to the console.
-
-  ```
-  COMICS_WS_API_TOKEN='YOUR_TOKEN'
-  ```
 
 ## Login
-### Description
-Gets a new token based on the ``email`` and ``password``.
+Returns the user profile and authentication token upon successful login in.
+
+* **URL**
+
+  ``/api/v1/public/login``
+
+
+* **Method**
+
+  `POST`
+
+
+* **URL Params**
+
+  None
+
+
+* **Data Params**
+
+  * email
+  * password
+
+
+* **Success Response**
+
+  * **Code:** 200
+  * **Content:**
+
+    ```
+    {
+        "email": "bart@mikasoftware.com",
+        "first_name": "Bart",
+        "last_name": "Mika",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDkyOTg1MDYsInVzZXJfaWQiOjF9.HrwHvfL4-1pMe7EcXEzlsxciFgK0xf2uC8BV1kfLT_c",
+        "user_id": 1
+    }
+    ```
+
+
+* **Error Response**
+
+  * **Code:** 400
+  * **Content:**
+
+    ```
+    {
+        "error": "Email or password is incorrect.",
+        "status": "Invalid request."
+    }
+    ```
+
+
+* **Sample Call**
 
   ```
-  /api/v1/public/login
+  $ http post 127.0.0.1:8080/api/v1/public/login email=bart@mikasoftware.com password=123password
   ```
 
-### Example Command
 
-  ```
-  http POST 127.0.0.1:8080/api/v1/public/login email=bart@mikasoftware.com password=123password
-  ```
-
-### Example Output
-
-  ```
-  {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDkwNzA2NjUsInVzZXJfaWQiOjF9.s16HtRf7qzu5vDV1iY3c5g8UMYfS1cvM3bV9e3ammxA"
-  }
-  ```
-
-### Notes:
-To help make the next few API endpoints easy to type, save your token to the console.
-
-  ```
-  COMICS_WS_API_TOKEN='YOUR_TOKEN'
-  ```
-
-## Profile
-### Description
-
-  ```
-  /api/v1/profile
-  ```
-
+## Get Profile
 The API endpoint used to get the user profile. Only the profile of the
 authenticated user is returned.
 
-### Example Command
+* **URL**
 
-  ```
-  http get 127.0.0.1:8080/api/v1/profile Authorization:"Bearer $COMICS_WS_API_TOKEN"
-  ```
+  ``/api/v1/profile``
 
-### Example Output
 
-  ```
-  {
-      "email": "bart@mikasoftware.com",
-      "user_id": 1,
-      "first_name": "Bart",
-      "last_name": "Mika"
-  }
-  ```
+* **Method**
+
+  ``GET``
+
+
+* **URL Params**
+
+    None
+
+
+* **Data Params**
+
+    None
+
+
+* **Success Response**
+
+    * **Code:** 200
+    * **Content:**
+
+    ```
+    {
+        "email": "bart@mikasoftware.com",
+        "first_name": "Bart",
+        "last_name": "Mika",
+        "user_id": 1
+    }
+    ```
+
+
+* **Error Response**
+
+    * None
+
+
+* **Sample Call**
+
+    ```
+    $ http get 127.0.0.1:8080/api/v1/profile Authorization:"Bearer $COMICS_WS_API_TOKEN"
+    ```
+
+# ---------------------------------------
+# ---------------------------------------
+# ---------------------------------------
+# ---------------------------------------
+
+
 
 ## Organization - List
 ### Description
