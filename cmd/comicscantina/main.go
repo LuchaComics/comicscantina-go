@@ -10,7 +10,7 @@ import (
     "github.com/luchacomics/comicscantina-go/internal/controller"
 	_ "github.com/luchacomics/comicscantina-go/internal/base/database"
 	"github.com/luchacomics/comicscantina-go/internal/base/service"
-	cc_middleware "github.com/luchacomics/comicscantina-go/internal/base/middleware"
+	cc_mw "github.com/luchacomics/comicscantina-go/internal/base/middleware"
 )
 
 // Initialize our applications shared functions.
@@ -38,6 +38,7 @@ func main() {
     r.Get("/api/v1/public/version", controller.HealthCheckFunc)
 	r.Post("/api/v1/public/register", controller.RegisterFunc)
     r.Post("/api/v1/public/login", controller.LoginFunc)
+    r.With(cc_mw.PaginationCtx).Get("/api/v1/public/organizations", controller.ListPublicOrganizationsFunc)
 
     //------------------------------------------------------------------------//
 	// Load up our protected API endpoints. The following API endpoints can   //
@@ -58,7 +59,7 @@ func main() {
 
         // This is the comics cantina authenticated user middleware which will
 		// lookup the verified JWT token and attach as a context to the request.
-		r.Use(cc_middleware.ProfileCtx)
+		r.Use(cc_mw.ProfileCtx)
 
 		//--------------------------------------------------------------------//
 		//                           API endpoints                            //
@@ -68,12 +69,12 @@ func main() {
 		r.Get("/api/v1/profile", controller.ProfileRetrieveFunc)
 
 		// Organizations
-		r.With(cc_middleware.PaginationCtx).Get("/api/v1/organizations", controller.ListOrganizationsFunc)
+		r.With(cc_mw.PaginationCtx).Get("/api/v1/organizations", controller.ListOrganizationsFunc)
 		r.Post("/api/v1/organizations", controller.CreateOrganizationFunc)
 		r.With(controller.OrganizationCtx).Get("/api/v1/organization/{organizationID}", controller.RetrieveOrganizationFunc)
 
 		// Store
-		r.With(cc_middleware.PaginationCtx).Get("/api/v1/stores", controller.ListStoresFunc)
+		r.With(cc_mw.PaginationCtx).Get("/api/v1/stores", controller.ListStoresFunc)
 		r.Post("/api/v1/stores", controller.CreateStoreFunc)
 		r.With(controller.StoreCtx).Get("/api/v1/store/{storeID}", controller.RetrieveStoreFunc)
 

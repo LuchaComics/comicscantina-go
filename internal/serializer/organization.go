@@ -15,6 +15,42 @@ import (
 //                                  LIST                                      //
 //----------------------------------------------------------------------------//
 
+// PUBLIC
+
+// Individual organization list response payload.
+type PublicOrganizationItemResponse struct {
+    ID                  uint64 `json:"id,omitempty" form:"int"`
+    Name                string `json:"name,omitempty"`
+    Description         string `json:"description,omitempty"`
+}
+
+// Constructor creates a PublicOrganizationItemResponse payload from the
+// Organization model data.
+func NewPublicOrganizationItemResponse(object *model.Organization) *PublicOrganizationItemResponse {
+	resp := &PublicOrganizationItemResponse{
+        ID: object.ID,
+        Name: object.Name,
+        Description: object.Description,
+    }
+	return resp
+}
+
+func (rd *PublicOrganizationItemResponse) Render(w http.ResponseWriter, r *http.Request) error {
+	// Pre-processing before a response is marshalled and sent across the wire
+	return nil
+}
+
+// Constructor creates a JSON response payload from the array of Organization
+// model data objects.
+func NewPublicOrganizationListResponse(organizations []model.Organization) []render.Renderer {
+	list := []render.Renderer{}
+	for _, organization := range organizations {
+		list = append(list, NewPublicOrganizationItemResponse(&organization))
+	}
+	return list
+}
+
+// PROTECTED
 
 // Individual organization list response payload.
 type OrganizationListItemResponse struct {

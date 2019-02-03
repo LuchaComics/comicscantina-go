@@ -102,3 +102,24 @@ func (manager *OrganizationManager) UserIsMemberOf(userID uint64, orgID uint64) 
     orm.Model(&users).Where("id = ?", userID)
     return len(users) > 0
 }
+
+func (manager *OrganizationManager) FilterActiveStatusByPageIndex(pageIndex uint64) ([]model.Organization, uint64) {
+    orm := manager.dao.GetORM() // Get our database layer.
+
+    // Initial array to hold query results.
+    var organizations []model.Organization
+
+    // Where will find all records.
+    orm.Where("id > ? AND status = 1", 0)
+
+    // Make our paginated query.
+    pagination := utils.Pagging(&utils.Param{
+		DB:      orm,
+		Page:    pageIndex,
+		Limit:   25,
+		OrderBy: []string{"id asc"},
+		ShowSQL: false,
+	}, &organizations)
+
+    return organizations, pagination.TotalRecord
+}

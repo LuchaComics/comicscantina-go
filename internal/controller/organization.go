@@ -2,7 +2,6 @@ package controller
 
 import (
     "context"
-    "fmt"
     "net/http"
     "strconv"
     "github.com/go-chi/chi"
@@ -40,13 +39,28 @@ func CreateOrganizationFunc(w http.ResponseWriter, r *http.Request) {
 //                                  LIST                                      //
 //----------------------------------------------------------------------------//
 
+// PUBLIC
+
+func ListPublicOrganizationsFunc(w http.ResponseWriter, r *http.Request) {
+    // Extract from the context our URL parameter.
+    pageIndex := r.Context().Value("pageIndex").(uint64)
+
+    organizations, _ := model_manager.OrganizationManagerInstance().FilterActiveStatusByPageIndex(pageIndex)
+
+    // Iterate through each `Country` object and render our specific view.
+    if err := render.RenderList(w, r, serializer.NewPublicOrganizationListResponse(organizations)); err != nil {
+		render.Render(w, r, serializer.ErrRender(err))
+		return
+	}
+}
+
+// PROTECTED
 
 func ListOrganizationsFunc(w http.ResponseWriter, r *http.Request) {
     // Extract from the context our URL parameter.
     pageIndex := r.Context().Value("pageIndex").(uint64)
 
     organizations, _ := model_manager.OrganizationManagerInstance().AllByPageIndex(pageIndex)
-    fmt.Println(organizations)
 
     // Iterate through each `Country` object and render our specific view.
     if err := render.RenderList(w, r, serializer.NewOrganizationListResponse(organizations)); err != nil {

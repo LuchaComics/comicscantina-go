@@ -234,10 +234,75 @@ authenticated user is returned.
     $ http get 127.0.0.1:8080/api/v1/profile Authorization:"Bearer $COMICS_WS_API_TOKEN"
     ```
 
+
+
+## List Public Organizations
+Returns paginated list of all the organizations which have been approved by the staff of [**Lucha Comics** ](https://luchacomics.com/) for public viewing. Anonymous users are granted permission to make calls to this endpoint.
+
+* **URL**
+
+  ``/api/v1/public/organizations``
+
+
+* **Method**
+
+  ``GET``
+
+
+* **URL Params**
+
+   * page
+
+
+* **Data Params**
+
+  None
+
+
+* **Success Response**
+
+  * **Code:** 200
+  * **Content:**
+
+  ```
+  [
+      {
+          "description": "The company",
+          "id": 1,
+          "name": "Mika Software Corporation"
+      }
+  ]
+  ```
+
+
+  * **Error Response**
+
+  * None
+
+
+  * **Sample Call**
+
+  ```
+  $ http get 127.0.0.1:8080/api/v1/public/organizations?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
+  ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ---------------------------------------
+# TODO: PLEASE IMPLEMENT & FIX BELOW
 # ---------------------------------------
-# ---------------------------------------
-# ---------------------------------------
+
 
 
 
@@ -287,7 +352,6 @@ The API endpoint used to create the organization.
 
   ```
   {
-      "Status": 0,
       "city": "London",
       "country": "Canada",
       "description": "The company",
@@ -296,6 +360,7 @@ The API endpoint used to create the organization.
       "name": "Mika Software",
       "owner_id": 1,
       "province": "Ontario",
+      "status": 1,
       "street_address": "111-204 Infinite Loop Road"
   }
   ```
