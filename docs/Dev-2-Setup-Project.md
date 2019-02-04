@@ -2,13 +2,36 @@
 
 ## Instructions
 
-### Setup from GitHub
+### Setup Web-App Database
+
+1. While being logged in as ``techops`` run the following:
+
+    ```
+    $ sudo -i -u postgres
+    $ psql
+    ```
+
+2. Then run the following.
+
+    ```sql
+    drop database comicscantina_db;
+    create database comicscantina_db;
+    \c comicscantina_db;
+    CREATE USER golang WITH PASSWORD 'YOUR_PASSWORD';
+    GRANT ALL PRIVILEGES ON DATABASE comicscantina_db to golang;
+    ALTER USER golang CREATEDB;
+    ALTER ROLE golang SUPERUSER;
+    CREATE EXTENSION postgis;
+    ```
+
+
+### Setup Web-App from GitHub
 Please run the following commands as the ``lucha`` user account.
 
 1. Get the project.
 
     ```
-    $ git get github.com/luchacomics/comicscantina-go
+    $ go get github.com/luchacomics/comicscantina-go
     ```
 
 2. Install the dependencies.
@@ -72,13 +95,13 @@ Please run the following commands as the ``techops`` user account.
 3. Restart ``Nginx``.
 
     ```
-    systemctl restart nginx
+    sudo systemctl restart nginx
     ```
 
 4. Run your go app manually.
 
     ```
-    # go run comicscantina-go
+    # go run github.com/luchacomics/comicscantina-go
     ```
 
 5. Now in your browser go to ``http://SERVER_DOMAIN_NAME_OR_IP`` and you should see the app!

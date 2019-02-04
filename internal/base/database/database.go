@@ -1,6 +1,7 @@
 package database
 
 import (
+    "fmt"
     "github.com/jinzhu/gorm"
     _ "github.com/lib/pq"
     "github.com/luchacomics/comicscantina-go/internal/base/config"
@@ -39,6 +40,7 @@ func Instance() (*DataAcessObject) {
     // The following code will connect our application to the `postgres` database.
     db, err := gorm.Open("postgres", databaseConfigString)
     if err != nil {
+        fmt.Println(err)
         panic("Failed to connect database")
     }
     // defer db.Close() // Handle this in `main.go` so do not uncomment this!
