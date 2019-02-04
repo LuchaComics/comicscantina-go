@@ -1,6 +1,45 @@
-# HOWTO: Setup ComicsCantian Data on DigitalOcean using CentOS 7 OS
+# HOWTO: Setup ComicsCantian on DigitalOcean using CentOS 7 OS
 
 ## Instructions
+### Setup Web-App Environment Variables
+Developers Note: These steps are necessary if you want to do development on the remote server. If you do not want to do this then you can skip this section. If you would like to continue, please begin by running the following commands as the ``techops`` user account.
+
+1. While being logged in as ``techops`` run the following:
+
+    ```
+    $ sudo vi /etc/profile.d/comicscantina_env.sh
+    ```
+
+
+2. Copy and paste the following. **Please change the variables to meet your own.**
+
+    ```
+    #!/bin/bash
+    export COMICSCANTINA_GORM_CONFIG="postgres://lucha:YOUR_PASSWORD@localhost/comicscantina_db?sslmode=disable"
+    export COMICSCANTINA_GORM_CONFIG="host=localhost port=5432 user=lucha dbname=comicscantina_db password=YOUR_PASSWORD sslmode=disable"
+    export COMICSCANTINA_SECRET="YOUR_SECRET_RANDOM_STRING"
+    export COMICSCANTINA_ADDRESS="127.0.0.1:8080"  # Do not change!!!
+    export COMICSCANTINA_UNIT_TEST_GORM_CONFIG="host=localhost port=5432 user=lucha dbname=comicscantina_test_db password=YOUR_PASSWORD sslmode=disable"
+    ```
+
+
+3. Afterwords run the following.
+
+    ```
+    $ sudo chmod 0755 /etc/profile.d/comicscantina_env.sh
+    ```
+
+
+4. On your next logon you'll have those environment variables loaded in. Feel free to log off and log back on. Afterwords to confirm the variables are loaded, run the following:
+
+    ```
+    $ sudo printenv
+
+    OR
+
+    $ sudo printenv COMICSCANTINA_GORM_CONFIG
+    ```
+
 
 ### Setup Web-App Database
 
@@ -11,16 +50,31 @@
     $ psql
     ```
 
-2. Then run the following.
+
+2. Then run the following to support our web-applications database.
 
     ```sql
     drop database comicscantina_db;
     create database comicscantina_db;
     \c comicscantina_db;
-    CREATE USER golang WITH PASSWORD 'YOUR_PASSWORD';
-    GRANT ALL PRIVILEGES ON DATABASE comicscantina_db to golang;
-    ALTER USER golang CREATEDB;
-    ALTER ROLE golang SUPERUSER;
+    CREATE USER lucha WITH PASSWORD 'YOUR_PASSWORD';
+    GRANT ALL PRIVILEGES ON DATABASE comicscantina_db to lucha;
+    ALTER USER lucha CREATEDB;
+    ALTER ROLE lucha SUPERUSER;
+    CREATE EXTENSION postgis;
+    ```
+
+
+3. And re-run to support our database used for unit testing.
+
+    ```sql
+    drop database comicscantina_test_db;
+    create database comicscantina_test_db;
+    \c comicscantina_test_db;
+    CREATE USER lucha WITH PASSWORD 'YOUR_PASSWORD';
+    GRANT ALL PRIVILEGES ON DATABASE comicscantina_test_db to lucha;
+    ALTER USER lucha CREATEDB;
+    ALTER ROLE lucha SUPERUSER;
     CREATE EXTENSION postgis;
     ```
 
@@ -34,6 +88,7 @@ Please run the following commands as the ``lucha`` user account.
     $ go get github.com/luchacomics/comicscantina-go
     ```
 
+
 2. Install the dependencies.
 
     ```
@@ -41,22 +96,15 @@ Please run the following commands as the ``lucha`` user account.
     $ ./requirements.sh;
     ```
 
-3. Run the the following environment variables. **Please change the variables to meet your own.**
 
-    ```
-    export COMICSCANTINA_GORM_CONFIG="host=localhost port=5432 user=golang dbname=comicscantina_db password=YOUR_PASSWORD sslmode=disable"
-    export COMICSCANTINA_SECRET="YOUR_SECRET_RANDOM_STRING"
-    export COMICSCANTINA_ADDRESS="127.0.0.1:8080"  # Do not change!!!
-    export COMICSCANTINA_UNIT_TEST_GORM_CONFIG="host=localhost port=5432 user=golang dbname=comicscantina_test_db password=YOUR_PASSWORD sslmode=disable"
-    ```
-
-5. Build our project.
+3. Build our project.
 
    ```
    $ go install github.com/luchacomics/comicscantina-go
    ```
 
-6. Enable permission and security while you are a ``techops`` user.
+
+4. Enable permission and security while you are a ``techops`` user.
 
     ```
     $ sudo setcap 'cap_net_bind_service=+ep' /opt/lucha/go/bin/comicscantina-go
@@ -65,14 +113,16 @@ Please run the following commands as the ``lucha`` user account.
     $ sudo chcon -Rt httpd_sys_content_t /opt/django/workery-django/workery/static
     ```
 
+
 ### Integrate Nginx with Golang
 Please run the following commands as the ``techops`` user account.
 
 1. Load up ``Nginx``.
 
    ```
-   sudo vi /etc/nginx/nginx.conf
+   $ sudo vi /etc/nginx/nginx.conf
    ```
+
 
 2. Replace with the following code.
 
@@ -92,11 +142,13 @@ Please run the following commands as the ``techops`` user account.
     }
     ```
 
+
 3. Restart ``Nginx``.
 
     ```
     sudo systemctl restart nginx
     ```
+
 
 4. Run your go app manually.
 
@@ -104,17 +156,21 @@ Please run the following commands as the ``techops`` user account.
     # go run github.com/luchacomics/comicscantina-go
     ```
 
+
 5. Now in your browser go to ``http://SERVER_DOMAIN_NAME_OR_IP`` and you should see the app!
+
 
 6. Special thanks to:
 
-* https://beego.me/docs/deploy/nginx.md
+  * https://beego.me/docs/deploy/nginx.md
+
 
 ### Integrate Systemd with Golang
 
 This section explains how to integrate our project with ``systemd`` so our operating system will handle stopping, restarting or starting.
 
-1. (OPTIONAL) If you cannot access the server, please stop and review the steps above. If everything is working proceed forward.
+1. **(OPTIONAL)** If you cannot access the server, please stop and review the steps above. If everything is working proceed forward.
+
 
 2. While you are logged in as a ``techops`` user, please write the following into the console.
 
@@ -122,26 +178,34 @@ This section explains how to integrate our project with ``systemd`` so our opera
     $ sudo vi /etc/systemd/system/comicscantina-go.service
     ```
 
-3. Implement
+
+3. Copy and paste the following. **Please change the variables to meet your own.** Please do not change the IP``127.0.0.1:8080``. Note: ``Nginx`` will be communicating with the ``golang`` app through this IP.
 
     ```
-    [Unit]
-    Description=ComicsCantina Data Microservice
+    Description=ComicsCantina Backend Webservice
     Wants=network.target
     After=network.target
 
     [Service]
+    Environment=COMICSCANTINA_GORM_CONFIG=postgres://lucha:YOUR_PASSWORD@localhost/comicscantina_db?sslmode=disable
+    Environment=COMICSCANTINA_SECRET=YOUR_SECRET_RANDOM_STRING
+    Environment=COMICSCANTINA_ADDRESS=127.0.0.1:8080
+    Environment=COMICSCANTINA_GORM_CONFIG=postgres://lucha:YOUR_PASSWORD@localhost/comicscantina_test_db?sslmode=disable
     Type=simple
     DynamicUser=yes
     WorkingDirectory=/opt/lucha/go/bin
+    ExecStartPre=$COMICSCANTINA_GORM_CONFIG
+    ExecStartPre=$COMICSCANTINA_SECRET
+    ExecStartPre=$COMICSCANTINA_UNIT_TEST_GORM_CONFIG
     ExecStart=/opt/lucha/go/bin/comicscantina-go
     Restart=always
     RestartSec=3
-    SyslogIdentifier=comicscantina_data
+    SyslogIdentifier=comicscantina_go
 
     [Install]
     WantedBy=multi-user.target
     ```
+
 
 4. Grant access.
 
@@ -149,11 +213,13 @@ This section explains how to integrate our project with ``systemd`` so our opera
    $ sudo chmod 755 /etc/systemd/system/comicscantina-go.service
    ```
 
+
 5. (Optional) If you've updated the above, you will need to run the following before proceeding.
 
     ```
-    $ systemctl daemon-reload
+    $ sudo systemctl daemon-reload
     ```
+
 
 6. We can now start the Gunicorn service we created and enable it so that it starts at boot:
 
@@ -162,12 +228,14 @@ This section explains how to integrate our project with ``systemd`` so our opera
     $ sudo systemctl enable comicscantina-go
     ```
 
+
 7. Confirm our service is running.
 
     ```
     $ systemctl status comicscantina-go.service
     $ journalctl -f -u comicscantina-go.service
     ```
+
 
 8. And verify the URL works in the browser.
 

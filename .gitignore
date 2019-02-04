@@ -39,5 +39,6 @@ Temporary Items
 # Application specific
 config/env.sh
 .env
-init_env.sh
+env_dev.sh
+env_prod.sh
 private.txt
