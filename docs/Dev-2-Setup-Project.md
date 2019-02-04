@@ -5,19 +5,17 @@
 ### Setup from GitHub
 Please run the following commands as the ``lucha`` user account.
 
-1. Clone the project.
+1. Get the project.
 
     ```
-    $ mkdir /opt/lucha/go/src/github.com/luchacomics;
-    $ cd /opt/lucha/go/src/github.com/luchacomics;
-    $ git clone https://github.com/LuchaComics/comicscantina-go.git
-    $ cd comicscantina-go
+    $ git get github.com/luchacomics/comicscantina-go
     ```
 
 2. Install the dependencies.
 
     ```
-    $ ./requirements.sh
+    $ cd /opt/lucha/go/src/github.com/luchacomics/comicscantina-go/;
+    $ ./requirements.sh;
     ```
 
 3. Run the the following environment variables. **Please change the variables to meet your own.**
@@ -32,8 +30,7 @@ Please run the following commands as the ``lucha`` user account.
 5. Build our project.
 
    ```
-   $ cd /opt/lucha/go/src/github.com/luchacomics;
-   $ go install comicscantina-go;
+   $ go install github.com/luchacomics/comicscantina-go
    ```
 
 6. Enable permission and security while you are a ``techops`` user.

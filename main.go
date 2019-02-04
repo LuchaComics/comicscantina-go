@@ -1,12 +1,19 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"net/http"
 	"runtime"
+	"os"
+	"os/signal"
+	"time"
 	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
-	"github.com/go-chi/jwtauth"
+    "github.com/go-chi/chi/middleware"
     "github.com/go-chi/render"
+	"github.com/go-chi/jwtauth"
+	"github.com/go-chi/valve"
+	"github.com/luchacomics/comicscantina-go/internal/base/config"
     "github.com/luchacomics/comicscantina-go/internal/controller"
 	_ "github.com/luchacomics/comicscantina-go/internal/base/database"
 	"github.com/luchacomics/comicscantina-go/internal/base/service"
@@ -20,6 +27,10 @@ func init() {
 
 // Entry point into our web service.
 func main() {
+	// Our graceful valve shut-off package to manage code preemption and
+	// shutdown signaling.
+	valv := valve.New()
+	baseCtx := valv.Context()
 	r := chi.NewRouter()
 
     //--------------------------------//
@@ -35,7 +46,8 @@ func main() {
     // Load up our non-protected API endpoints. The following API endpoints   //
 	// can be accessed regardless of whether a JWT token was provided or not. //
 	//------------------------------------------------------------------------//
-    r.Get("/api/v1/public/version", controller.HealthCheckFunc)
+	r.Get("/", controller.HealthCheckFunc)
+	r.Get("/api/v1/public/version", controller.HealthCheckFunc)
 	r.Post("/api/v1/public/register", controller.RegisterFunc)
     r.Post("/api/v1/public/login", controller.LoginFunc)
     r.With(cc_mw.PaginationCtx).Get("/api/v1/public/organizations", controller.ListPublicOrganizationsFunc)
@@ -88,5 +100,42 @@ func main() {
     //------------------------------------------------------------------------//
 	//                         HTTP Running Server                            //
 	//------------------------------------------------------------------------//
-	http.ListenAndServe(":8080", r)
+	// Get our server address.
+    address := config.GetSettingsVariableAddress()
+
+    // Integrate our server with our base context.
+	srv := http.Server{Addr: address, Handler: chi.ServerBaseContext(baseCtx, r)}
+
+    // The following code was taken from the following repo:
+	// https://github.com/go-chi/chi/blob/0c5e7abb4e562fa14dd2548cb57b28f979a7dcd9/_examples/graceful/main.go#L88
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	go func() {
+		for range c {
+			// sig is a ^C, handle it
+			fmt.Println("shutting down..")
+
+			// first valv
+			valv.Shutdown(20 * time.Second)
+
+			// create context with timeout
+			ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+			defer cancel()
+
+			// start http shutdown
+			srv.Shutdown(ctx)
+
+			// verify, in worst case call cancel via defer
+			select {
+			case <-time.After(21 * time.Second):
+				fmt.Println("not all connections done")
+			case <-ctx.Done():
+
+			}
+		}
+	}()
+	srv.ListenAndServe()
+
+    // // Start our web-server.
+	// http.ListenAndServe(":8080", r)
 }
