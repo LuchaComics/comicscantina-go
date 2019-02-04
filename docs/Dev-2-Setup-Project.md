@@ -20,24 +20,19 @@ Please run the following commands as the ``lucha`` user account.
     $ ./requirements.sh
     ```
 
-3. Open the config file again.
+3. Run the the following environment variables. **Please change the variables to meet your own.**
 
     ```
-    $ vi /opt/lucha/go/bin/.env
-    ```
-
-4. Append the following environment variables. **Please change the variables to meet your own.**
-
-    ```
-    COMICS_WS_GORM_CONFIG='host=localhost port=5432 user=lucha dbname=comics_db password=123password sslmode=disable'
-    COMICS_WS_SECRET='YOUR_APPS_SECRET_KEY'
-    COMICS_WS_ADDRESS='127.0.0.1:8080'  # Do not change!
+    export COMICSCANTINA_GORM_CONFIG="host=localhost port=5432 user=golang dbname=comicscantina_db password=YOUR_PASSWORD sslmode=disable"
+    export COMICSCANTINA_SECRET="YOUR_SECRET_RANDOM_STRING"
+    export COMICSCANTINA_ADDRESS="127.0.0.1:8080"  # Do not change!!!
+    export COMICSCANTINA_UNIT_TEST_GORM_CONFIG="host=localhost port=5432 user=golang dbname=comicscantina_test_db password=YOUR_PASSWORD sslmode=disable"
     ```
 
 5. Build our project.
 
    ```
-   $ cd /opt/lucha/go/src;
+   $ cd /opt/lucha/go/src/github.com/luchacomics;
    $ go install comicscantina-go;
    ```
 

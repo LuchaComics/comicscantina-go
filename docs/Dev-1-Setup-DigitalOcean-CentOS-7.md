@@ -436,6 +436,7 @@ The following instructions where adapted from  [DigitalOcean](https://www.digita
 9. Append the following:
 
     ```
+    export GOROOT=/usr/local/go
     export GOBIN="$HOME/go/bin"
     export GOPATH="$HOME/go"
     ```
