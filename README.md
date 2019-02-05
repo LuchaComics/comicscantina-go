@@ -2,8 +2,14 @@
 The web platform for buying and selling comic books online. The ``go`` repository is the back-end service which powers a front-end service.
 
 ## Installation
+1. Get the latest code.
 
-1. Open up postgres and run the following to setup the database for development or production.
+  ```bash
+  go get -u -v github.com/luchacomics/comicscantina-go
+  ```
+
+
+2. Open up postgres and run the following to setup the database for development or production.
 
   ```sql
   drop database comicscantina_db;
@@ -16,7 +22,8 @@ The web platform for buying and selling comic books online. The ``go`` repositor
   CREATE EXTENSION postgis;
   ```
 
-2. Run the following to setup the database for unit testing.
+
+3. Run the following to setup the database for unit testing.
 
   ```sql
   drop database comicscantina_test_db;
@@ -29,18 +36,20 @@ The web platform for buying and selling comic books online. The ``go`` repositor
   CREATE EXTENSION postgis;
   ```
 
-3. Install our dependencies
+
+4. Install our dependencies
 
   ```
   ./requirements.sh
   ```
 
-4. Update environmental variables by running the following. Please change the variables to whatever you prefer.
+
+5. Update environmental variables by running the following. Please change the variables to whatever you prefer.
 
   ```bash
   #!/bin/bash
-  export COMICSCANTINA_GORM_CONFIG="host=localhost port=5432 user=golang dbname=comicscantina_db password=YOUR_PASSWORD sslmode=disable"
+  export COMICSCANTINA_GORM_CONFIG="postgres://golang:YOUR_PASSWORD@localhost/comicscantina_db?sslmode=disable"
   export COMICSCANTINA_SECRET="YOUR_SECRET_RANDOM_STRING"
   export COMICSCANTINA_ADDRESS="127.0.0.1:8080"
-  export COMICSCANTINA_UNIT_TEST_GORM_CONFIG="host=localhost port=5432 user=golang dbname=comicscantina_test_db password=YOUR_PASSWORD sslmode=disable"
+  export COMICSCANTINA_UNIT_TEST_GORM_CONFIG="postgres://golang:YOUR_PASSWORD@localhost/comicscantina_test_db?sslmode=disable"
   ```
