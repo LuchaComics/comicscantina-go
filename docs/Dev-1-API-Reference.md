@@ -5,13 +5,14 @@ Comics Cantina API Reference
 
 1. To help make the next few API endpoints easy to type, save your token to the console.
 
-  ```
-  COMICS_WS_API_TOKEN='YOUR_TOKEN'
-  ```
+    ```
+    COMICS_WS_API_TOKEN='YOUR_TOKEN'
+    ```
 
 2. You will notice ``http`` used in the sample calls through this document, this is the ``Python`` command line application called ``HTTPie``. Download the command line application by following [these instructions](https://httpie.org/).
 
-3. If you are going any contributions, please make sure your edits follow the [API documentation standard](https://gist.github.com/iros/3426278).
+
+3. If you are going to make any contributions, please make sure your edits follow the [API documentation standard](https://gist.github.com/iros/3426278) for this document; in addition, please read [Googles API Design Guide](https://cloud.google.com/apis/design/) for further consideration.
 
 
 ## Get API Version
@@ -20,12 +21,12 @@ Returns the version information of Comics Cantina. This is a useful endpoint to 
 
 * **URL**
 
-  `/api/v1/public/version`
+  ``/api/v1/public/version``
 
 
 * **Method**
 
-  `GET`
+  ``GET``
 
 
 * **URL Params**
@@ -43,7 +44,7 @@ Returns the version information of Comics Cantina. This is a useful endpoint to 
   * **Code:** 200
   * **Content:**
 
-    ```
+    ```json
     {
         "Service": "v0.1",
         "API: 'v1"
@@ -58,9 +59,9 @@ Returns the version information of Comics Cantina. This is a useful endpoint to 
 
 * **Sample Call**
 
-  ``
+  ```bash
   $ http get 127.0.0.1:8080/api/v1/public/version
-  ``
+  ```
 
 
 ## Register
@@ -77,7 +78,7 @@ It's important to note that emails must be unique and passwords strong or else v
 
 * **Method**
 
-  `POST`
+  ``POST``
 
 
 * **URL Params**
@@ -98,7 +99,7 @@ It's important to note that emails must be unique and passwords strong or else v
   * **Code:** 200
   * **Content:**
 
-    ```
+    ```json
     {
         "email": "bart@mikasoftware.com",
         "first_name": "Bart",
@@ -114,7 +115,7 @@ It's important to note that emails must be unique and passwords strong or else v
   * **Code:** 400
   * **Content:**
 
-    ```
+    ```json
     {
         "error": "Email is not unique.",
         "status": "Invalid request."
@@ -124,7 +125,7 @@ It's important to note that emails must be unique and passwords strong or else v
 
 * **Sample Call**
 
-  ```
+  ```bash
   $ http post 127.0.0.1:8080/api/v1/public/register email=bart@mikasoftware.com password=123password first_name=Bart last_name=Mika
   ```
 
@@ -139,7 +140,7 @@ Returns the *user profile* and authentication *token* upon successful login in.
 
 * **Method**
 
-  `POST`
+  ``POST``
 
 
 * **URL Params**
@@ -158,7 +159,7 @@ Returns the *user profile* and authentication *token* upon successful login in.
   * **Code:** 200
   * **Content:**
 
-    ```
+    ```json
     {
         "email": "bart@mikasoftware.com",
         "first_name": "Bart",
@@ -174,7 +175,7 @@ Returns the *user profile* and authentication *token* upon successful login in.
   * **Code:** 400
   * **Content:**
 
-    ```
+    ```json
     {
         "error": "Email or password is incorrect.",
         "status": "Invalid request."
@@ -184,7 +185,7 @@ Returns the *user profile* and authentication *token* upon successful login in.
 
 * **Sample Call**
 
-  ```
+  ```bash
   $ http post 127.0.0.1:8080/api/v1/public/login email=bart@mikasoftware.com password=123password
   ```
 
@@ -218,7 +219,7 @@ The API endpoint used to get the *user profile details*. Only the *profile* of t
     * **Code:** 200
     * **Content:**
 
-    ```
+    ```json
     {
         "email": "bart@mikasoftware.com",
         "first_name": "Bart",
@@ -235,7 +236,7 @@ The API endpoint used to get the *user profile details*. Only the *profile* of t
 
 * **Sample Call**
 
-    ```
+    ```bash
     $ http get 127.0.0.1:8080/api/v1/profile Authorization:"Bearer $COMICS_WS_API_TOKEN"
     ```
 
@@ -269,7 +270,7 @@ Returns paginated list of all the *organizations* which have been approved by th
   * **Code:** 200
   * **Content:**
 
-  ```
+  ```json
   [
       {
           "description": "The company",
@@ -287,7 +288,7 @@ Returns paginated list of all the *organizations* which have been approved by th
 
   * **Sample Call**
 
-  ```
+  ```bash
   $ http get 127.0.0.1:8080/api/v1/public/organizations?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
 
@@ -337,7 +338,7 @@ Once an *organization* has been created, the staff of [**Lucha Comics** ](https:
   * **Code:** 200
   * **Content:**
 
-    ```
+    ```json
     {
         "city": "London",
         "country": "Canada",
@@ -358,7 +359,7 @@ Once an *organization* has been created, the staff of [**Lucha Comics** ](https:
   * **Code:** 400
   * **Content:**
 
-    ```
+    ```json
     {
         "error": "Name is not unique.",
         "status": "Invalid request."
@@ -370,7 +371,7 @@ Once an *organization* has been created, the staff of [**Lucha Comics** ](https:
   * **Code:** 400
   * **Content:**
 
-    ```
+    ```json
     {
         "error": "Cannot create organization because you have already created an organization. You are allowed to only have one organization per account.",
         "status": "Invalid request."
@@ -382,7 +383,7 @@ Once an *organization* has been created, the staff of [**Lucha Comics** ](https:
   * **Code:** 400
   * **Content:**
 
-    ```
+    ```json
     {
         "error": "Cannot create organization because you are an employee. Please create a new account if you want to create an organization.",
         "status": "Invalid request."
@@ -392,7 +393,7 @@ Once an *organization* has been created, the staff of [**Lucha Comics** ](https:
 
 * **Sample Call**
 
-  ```
+  ```bash
   $ http post 127.0.0.1:8080/api/v1/organizations \
     Authorization:"Bearer $COMICS_WS_API_TOKEN" \
     name="Mika Software" \
@@ -431,7 +432,7 @@ Returns paginated list of all the *organizations* if the *authenticated user* is
   * **Code:** 200
   * **Content:**
 
-    ```
+    ```json
     [
         {
             "description": "The company",
@@ -447,14 +448,14 @@ Returns paginated list of all the *organizations* if the *authenticated user* is
   * **Code:** 401
   * **Content:**
 
-    ```
+    ```json
     You are not a staff member.
     ```
 
 
 * **Sample Call**
 
-  ```
+  ```bash
   $ http get 127.0.0.1:8080/api/v1/organizations?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
 
@@ -492,7 +493,7 @@ It is important to note that if the *authenticated user* is staff member of [**L
   * **Code:** 200
   * **Content:**
 
-    ```
+    ```json
     {
         "city": "London",
         "country": "Canada",
@@ -515,7 +516,7 @@ It is important to note that if the *authenticated user* is staff member of [**L
 
 * **Sample Call**
 
-  ```
+  ```bash
   $ http get 127.0.0.1:8080/api/v1/organization/1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
 
@@ -557,7 +558,7 @@ It is important to note that if the *authenticated user* is staff member of [**L
   * **Code:** 200
   * **Content:**
 
-    ```
+    ```json
     [
         {
             "description": "The company",
@@ -575,7 +576,7 @@ It is important to note that if the *authenticated user* is staff member of [**L
 
 * **Sample Call**
 
-  ```
+  ```bash
   $ http get 127.0.0.1:8080/api/v1/stores?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
 
@@ -621,7 +622,7 @@ The API endpoint used to create a *Store* in Comics Cantina by an *authenticated
   * **Code:** 200
   * **Content:**
 
-  ```
+  ```json
   {
       "city": "London",
       "country": "Canada",
@@ -642,7 +643,7 @@ The API endpoint used to create a *Store* in Comics Cantina by an *authenticated
   * **Code:** 400
   * **Content:**
 
-    ```
+    ```json
     {
       "error": "`organization_id` is invalid - either does not exist or you are not a member of it.",
       "status": "Invalid request."
@@ -690,7 +691,7 @@ It is important to note that if the *authenticated user* is staff member of [**L
   * **Code:** 200
   * **Content:**
 
-    ```
+    ```json
     {
         "city": "London",
         "country": "Canada",
@@ -713,7 +714,7 @@ It is important to note that if the *authenticated user* is staff member of [**L
 
 * **Sample Call**
 
-  ```
+  ```bash
   $ http get 127.0.0.1:8080/api/v1/store/1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
 
