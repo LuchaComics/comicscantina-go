@@ -5,7 +5,7 @@ Comics Cantina API Reference
 
 1. To help make the next few API endpoints easy to type, save your token to the console.
 
-    ```
+    ```bash
     COMICS_WS_API_TOKEN='YOUR_TOKEN'
     ```
 
