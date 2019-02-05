@@ -281,12 +281,12 @@ Returns paginated list of all the *organizations* which have been approved by th
   ```
 
 
-  * **Error Response**
+* **Error Response**
 
   * None
 
 
-  * **Sample Call**
+* **Sample Call**
 
   ```bash
   $ http get 127.0.0.1:8080/api/v1/public/organizations?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
@@ -345,7 +345,7 @@ Once an *organization* has been created, the staff of [**Lucha Comics** ](https:
         "description": "The company",
         "email": "bart@mikasoftware.com",
         "id": 1,
-        "name": "Mika Software",
+        "name": "Mika Software Corporation",
         "owner_id": 1,
         "province": "Ontario",
         "status": 1,
@@ -396,7 +396,7 @@ Once an *organization* has been created, the staff of [**Lucha Comics** ](https:
   ```bash
   $ http post 127.0.0.1:8080/api/v1/organizations \
     Authorization:"Bearer $COMICS_WS_API_TOKEN" \
-    name="Mika Software" \
+    name="Mika Software Corporation" \
     description="The company" \
     email="bart@mikasoftware.com" \
     street_address="111-204 Infinite Loop Road" \
@@ -520,65 +520,10 @@ It is important to note that if the *authenticated user* is staff member of [**L
   $ http get 127.0.0.1:8080/api/v1/organization/1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
 
+
 ## Update Organization
 
 **TODO: IMPLEMENT**
-
-
-## List Stores
-Returns paginated list of all the *stores* that meet any of these criteria for the *authenticated user* that made the call:
-
-  * *user* is the owner of the *organization*
-  * *user* is an employee of the *organization*
-
-It is important to note that if the *authenticated user* is staff member of [**Lucha Comics** ](https://luchacomics.com/) then all *organizations* get listed regardless of membership or status.
-
-* **URL**
-
-  ``/api/v1/stores``
-
-
-* **Method**
-
-  ``GET``
-
-
-* **URL Params**
-
-  * page
-
-
-* **Data Params**
-
-  None
-
-
-* **Success Response**
-
-  * **Code:** 200
-  * **Content:**
-
-    ```json
-    [
-        {
-            "description": "The company",
-            "id": 1,
-            "name": "Mika Software Corporation"
-        }
-    ]
-    ```
-
-
-* **Error Response**
-
-  * None
-
-
-* **Sample Call**
-
-  ```bash
-  $ http get 127.0.0.1:8080/api/v1/stores?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
-  ```
 
 
 ## Create Store
@@ -586,7 +531,7 @@ The API endpoint used to create a *Store* in Comics Cantina by an *authenticated
 
 * **URL**
 
-  ``/api/v1/organizations``
+  ``/api/v1/stores``
 
 
 * **Method**
@@ -653,8 +598,73 @@ The API endpoint used to create a *Store* in Comics Cantina by an *authenticated
 
 * **Sample Call**
 
+  ```bash
+  $ http post 127.0.0.1:8080/api/v1/stores \
+    Authorization:"Bearer $COMICS_WS_API_TOKEN" \
+    name="Downtown Main Store" \
+    description="The brick and morter comics store in downtown." \
+    email="bart@mikasoftware.com" \
+    street_address="111-204 Infinite Loop Road" \
+    city="London" \
+    province="Ontario" \
+    country="Canada" \
+    organization_id=1
   ```
-  $ http post 127.0.0.1:8080/api/v1/stores Authorization:"Bearer $COMICS_WS_API_TOKEN" name="Main Store" description="The brick and morter comics store." email="bart@mikasoftware.com" street_address="111-204 Infinite Loop Road" city="London" province="Ontario" country="Canada" organization_id=1
+
+
+## List Stores
+Returns paginated list of all the *stores* that meet any of these criteria for the *authenticated user* that made the call:
+
+  * *user* is the owner of the *organization*
+  * *user* is an employee of the *organization*
+
+It is important to note that if the *authenticated user* is staff member of [**Lucha Comics** ](https://luchacomics.com/) then all *organizations* get listed regardless of membership or status.
+
+* **URL**
+
+  ``/api/v1/stores``
+
+
+* **Method**
+
+  ``GET``
+
+
+* **URL Params**
+
+  * page
+
+
+* **Data Params**
+
+  None
+
+
+* **Success Response**
+
+  * **Code:** 200
+  * **Content:**
+
+    ```json
+    [
+        {
+            "description": "The company",
+            "id": 1,
+            "name": "Mika Software Corporation"
+        }
+    ]
+    ```
+
+
+* **Error Response**
+
+  * None
+
+
+* **Sample Call**
+
+  ```bash
+  $ http get 127.0.0.1:8080/api/v1/stores?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
 
 
