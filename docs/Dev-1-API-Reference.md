@@ -126,7 +126,7 @@ It's important to note that emails must be unique and passwords strong or else v
 * **Sample Call**
 
   ```bash
-  $ http post 127.0.0.1:8080/api/v1/public/register email=bart@mikasoftware.com password=123password first_name=Bart last_name=Mika
+  $ http post 127.0.0.1:8080/api/v1/public/register email=bart@mikasoftware.com password=YOUR_PASSWORD first_name=Bart last_name=Mika
   ```
 
 
@@ -186,7 +186,7 @@ Returns the *user profile* and authentication *token* upon successful login in.
 * **Sample Call**
 
   ```bash
-  $ http post 127.0.0.1:8080/api/v1/public/login email=bart@mikasoftware.com password=123password
+  $ http post 127.0.0.1:8080/api/v1/public/login email=bart@mikasoftware.com password=YOUR_PASSWORD
   ```
 
 
