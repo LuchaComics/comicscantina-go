@@ -126,7 +126,11 @@ It's important to note that emails must be unique and passwords strong or else v
 * **Sample Call**
 
   ```bash
-  $ http post 127.0.0.1:8080/api/v1/public/register email=bart@mikasoftware.com password=YOUR_PASSWORD first_name=Bart last_name=Mika
+  $ http post 127.0.0.1:8080/api/v1/public/register \
+    email=bart@mikasoftware.com \
+    password=YOUR_PASSWORD \
+    first_name=Bart \
+    last_name=Mika
   ```
 
 
@@ -186,7 +190,9 @@ Returns the *user profile* and authentication *token* upon successful login in.
 * **Sample Call**
 
   ```bash
-  $ http post 127.0.0.1:8080/api/v1/public/login email=bart@mikasoftware.com password=YOUR_PASSWORD
+  $ http post 127.0.0.1:8080/api/v1/public/login \
+    email=bart@mikasoftware.com \
+    password=YOUR_PASSWORD
   ```
 
 
@@ -289,7 +295,7 @@ Returns paginated list of all the *organizations* which have been approved by th
 * **Sample Call**
 
   ```bash
-  $ http get 127.0.0.1:8080/api/v1/public/organizations?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
+  $ http get 127.0.0.1:8080/api/v1/public/organizations page==1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
 
 
@@ -456,7 +462,7 @@ Returns paginated list of all the *organizations* if the *authenticated user* is
 * **Sample Call**
 
   ```bash
-  $ http get 127.0.0.1:8080/api/v1/organizations?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
+  $ http get 127.0.0.1:8080/api/v1/organizations page==1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
 
 
@@ -664,7 +670,7 @@ It is important to note that if the *authenticated user* is staff member of [**L
 * **Sample Call**
 
   ```bash
-  $ http get 127.0.0.1:8080/api/v1/stores?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
+  $ http get 127.0.0.1:8080/api/v1/stores page==1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
 
 
@@ -836,7 +842,11 @@ It is important to note that if the *authenticated user* is staff member of [**L
 * **Sample Call**
 
   ```bash
-  $ http get 127.0.0.1:8080/api/v1/products?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
+  $ http get 127.0.0.1:8080/api/v1/products page==1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
+
+  OR
+
+  $ http get 127.0.0.1:8080/api/v1/products page==1 store_id==1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
   ```
 
 

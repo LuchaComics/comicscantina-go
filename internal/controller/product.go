@@ -1,9 +1,9 @@
 package controller
 
 import (
-    // "context"
+    "context"
     "net/http"
-    // "strconv"
+    "strconv"
     // "github.com/go-chi/chi"
 	"github.com/go-chi/render"
     "github.com/luchacomics/comicscantina-go/internal/model"
@@ -74,10 +74,32 @@ func CreateProductFunc(w http.ResponseWriter, r *http.Request) {
 //----------------------------------------------------------------------------//
 
 
+// Middleware will extract all the URL parameters from the URL and attach the
+// values to the request context.
+func ProductFiltersCtx(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        // Get the request context.
+        ctx := r.Context()
+
+        // Attempt to extract our URL parameters.
+        storeIDString := r.FormValue("store_id")
+        storeID, err := strconv.ParseUint(storeIDString, 10, 64)
+        if err != nil {
+            storeID = 0
+        }
+		ctx = context.WithValue(ctx, "storeID", storeID)
+
+        // Attach our updated context to the request.
+        next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
+
 func ListProductsFunc(w http.ResponseWriter, r *http.Request) {
     // Extract from the context our URL parameter.
     pageIndex := r.Context().Value("pageIndex").(uint64)
     user := r.Context().Value("user").(*model.User)
+    storeID := r.Context().Value("storeID").(uint64)
 
     // Filter the Product model data based on the context of the user:
     // (1) Owners have all their products listed.
@@ -87,17 +109,21 @@ func ListProductsFunc(w http.ResponseWriter, r *http.Request) {
     if user.OrganizationID != 0 {
         products, _ = model_manager.ProductManagerInstance().PaginatedFilterBy(
             user.OrganizationID,
-            0,
+            storeID,
             pageIndex,
         )
     } else if user.EmployerID != 0 {
         products, _ = model_manager.ProductManagerInstance().PaginatedFilterBy(
             user.EmployerID,
-            0,
+            storeID,
             pageIndex,
         )
     } else if user.GroupID == 2 {
-        products, _ = model_manager.ProductManagerInstance().PaginatedAll(pageIndex)
+        products, _ = model_manager.ProductManagerInstance().PaginatedFilterBy(
+            0, // Skip filtering by organization_id.
+            storeID,
+            pageIndex,
+        )
     }
 
     // Iterate through each `Product` object and render our specific view.
