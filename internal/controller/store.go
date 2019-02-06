@@ -28,9 +28,15 @@ func ListStoresFunc(w http.ResponseWriter, r *http.Request) {
     // (3) All stores listed if user is staff.
     var stores []model.Store;
     if user.OrganizationID != 0 {
-        stores, _ = model_manager.StoreManagerInstance().PaginatedFilterBy(user.OrganizationID, pageIndex)
+        stores, _ = model_manager.StoreManagerInstance().PaginatedFilterBy(
+            user.OrganizationID,
+            pageIndex,
+        )
     } else if user.EmployerID != 0 {
-        stores, _ = model_manager.StoreManagerInstance().PaginatedFilterBy(user.EmployerID, pageIndex)
+        stores, _ = model_manager.StoreManagerInstance().PaginatedFilterBy(
+            user.EmployerID,
+            pageIndex,
+        )
     } else if user.GroupID == 2 {
         stores, _ = model_manager.StoreManagerInstance().PaginatedAll(pageIndex)
     }

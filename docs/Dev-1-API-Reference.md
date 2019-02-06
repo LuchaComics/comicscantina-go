@@ -787,3 +787,109 @@ The API endpoint used to create a *Product* in Comics Cantina by an *authenticat
     organization_id=1 \
     store_id=1
   ```
+
+
+## List Products
+Returns paginated list of all the *products* that meet any of these criteria for the *authenticated user* that made the call:
+
+  * *user* is the owner of the *organization*
+  * *user* is an employee of the *organization*
+
+It is important to note that if the *authenticated user* is staff member of [**Lucha Comics** ](https://luchacomics.com/) then all *organizations* get listed regardless of membership or status.
+
+* **URL**
+
+  ``/api/v1/products``
+
+
+* **Method**
+
+  ``GET``
+
+
+* **URL Params**
+
+  * page
+  * store_id
+
+
+* **Data Params**
+
+  None
+
+
+* **Success Response**
+
+  * **Code:** 200
+  * **Content:**
+
+    ```json
+    TODO: IMPLEMENT
+    ```
+
+
+* **Error Response**
+
+  * None
+
+
+* **Sample Call**
+
+  ```bash
+  $ http get 127.0.0.1:8080/api/v1/products?page=1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
+  ```
+
+
+## Retrieve Product
+Returns the *product* details. Only *authenticated users* which meet the following criteria are allowed to access this endpoint:
+
+  * *user* is the owner of the *organization*
+  * *user* is an employee of the *organization*
+
+It is important to note that if the *authenticated user* is staff member of [**Lucha Comics** ](https://luchacomics.com/) then they are automatically granted access.
+
+* **URL**
+
+  ``/api/v1/product/<product_id>``
+
+
+* **Method**
+
+  ``GET``
+
+
+* **URL Params**
+
+  None
+
+
+* **Data Params**
+
+  None
+
+
+* **Success Response**
+
+  * **Code:** 200
+  * **Content:**
+
+    ```json
+    TODO: IMPLEMENT
+    ```
+
+
+* **Error Response**
+
+  * None
+
+
+* **Sample Call**
+
+  ```bash
+  $ http get 127.0.0.1:8080/api/v1/product/1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
+  ```
+
+
+## Update Product
+
+**TODO: IMPLEMENT**

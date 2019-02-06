@@ -6,41 +6,10 @@ import (
     // "strconv"
     // "github.com/go-chi/chi"
 	"github.com/go-chi/render"
-    // "github.com/luchacomics/comicscantina-go/internal/model"
-	// "github.com/luchacomics/comicscantina-go/internal/model_manager"
+    "github.com/luchacomics/comicscantina-go/internal/model"
+	"github.com/luchacomics/comicscantina-go/internal/model_manager"
     "github.com/luchacomics/comicscantina-go/internal/serializer"
 )
-
-
-// //----------------------------------------------------------------------------//
-// //                                  LIST                                      //
-// //----------------------------------------------------------------------------//
-//
-//
-// func ListProductsFunc(w http.ResponseWriter, r *http.Request) {
-//     // Extract from the context our URL parameter.
-//     pageIndex := r.Context().Value("pageIndex").(uint64)
-//     user := r.Context().Value("user").(*model.User)
-//
-//     // Filter the Product model data based on the context of the user:
-//     // (1) Owners have all their products listed.
-//     // (2) Employers have all their products listed.
-//     // (3) All products listed if user is staff.
-//     var products []model.Product;
-//     if user.OrganizationID != 0 {
-//         products, _ = model_manager.ProductManagerInstance().PaginatedFilterBy(user.OrganizationID, pageIndex)
-//     } else if user.EmployerID != 0 {
-//         products, _ = model_manager.ProductManagerInstance().PaginatedFilterBy(user.EmployerID, pageIndex)
-//     } else if user.GroupID == 2 {
-//         products, _ = model_manager.ProductManagerInstance().PaginatedAll(pageIndex)
-//     }
-//
-//     // Iterate through each `Product` object and render our specific view.
-//     if err := render.RenderList(w, r, serializer.NewProductListResponse(products)); err != nil {
-// 		render.Render(w, r, serializer.ErrRender(err))
-// 		return
-// 	}
-// }
 
 
 //----------------------------------------------------------------------------//
@@ -98,3 +67,42 @@ func CreateProductFunc(w http.ResponseWriter, r *http.Request) {
 // 		return
 // 	}
 // }
+
+
+//----------------------------------------------------------------------------//
+//                                  LIST                                      //
+//----------------------------------------------------------------------------//
+
+
+func ListProductsFunc(w http.ResponseWriter, r *http.Request) {
+    // Extract from the context our URL parameter.
+    pageIndex := r.Context().Value("pageIndex").(uint64)
+    user := r.Context().Value("user").(*model.User)
+
+    // Filter the Product model data based on the context of the user:
+    // (1) Owners have all their products listed.
+    // (2) Employers have all their products listed.
+    // (3) All products listed if user is staff.
+    var products []model.Product;
+    if user.OrganizationID != 0 {
+        products, _ = model_manager.ProductManagerInstance().PaginatedFilterBy(
+            user.OrganizationID,
+            0,
+            pageIndex,
+        )
+    } else if user.EmployerID != 0 {
+        products, _ = model_manager.ProductManagerInstance().PaginatedFilterBy(
+            user.EmployerID,
+            0,
+            pageIndex,
+        )
+    } else if user.GroupID == 2 {
+        products, _ = model_manager.ProductManagerInstance().PaginatedAll(pageIndex)
+    }
+
+    // Iterate through each `Product` object and render our specific view.
+    if err := render.RenderList(w, r, serializer.NewProductListResponse(products)); err != nil {
+		render.Render(w, r, serializer.ErrRender(err))
+		return
+	}
+}

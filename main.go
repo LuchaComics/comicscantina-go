@@ -91,8 +91,9 @@ func main() {
 		r.With(controller.StoreCtx).Get("/api/v1/store/{storeID}", controller.RetrieveStoreFunc)
 
 		// Product
-		//TODO: IMPLEMENT.
+		r.With(cc_mw.PaginationCtx).Get("/api/v1/products", controller.ListProductsFunc)
 		r.Post("/api/v1/products", controller.CreateProductFunc)
+		//TODO: IMPLEMENT.
 
 		// Receipts
 		//TODO: IMPLEMENT.

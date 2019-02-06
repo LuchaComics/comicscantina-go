@@ -4,7 +4,7 @@ import (
     "context"
     "errors"
     "net/http"
-    // "github.com/go-chi/render"
+    "github.com/go-chi/render"
     "github.com/luchacomics/comicscantina-go/internal/base/database"
     "github.com/luchacomics/comicscantina-go/internal/model"
     "github.com/luchacomics/comicscantina-go/internal/model_manager"
@@ -99,42 +99,42 @@ func (rd *ProductResponse) Render(w http.ResponseWriter, r *http.Request) error 
 }
 
 
-// //----------------------------------------------------------------------------//
-// //                                  LIST                                      //
-// //----------------------------------------------------------------------------//
-//
-//
-// // Individual product list response payload.
-// type ProductListItemResponse struct {
-//     ID                  uint64 `json:"id,omitempty" form:"int"`
-//     Name                string `json:"name,omitempty"`
-//     Description         string `json:"description,omitempty"`
-//     OrganizationID      uint64 `json:"organization_id,omitempty" form:"int"`
-// }
-//
-// // Constructor creates a ProductListItemResponse payload from the
-// // Product model data.
-// func NewProductListItemResponse(object *model.Product) *ProductListItemResponse {
-// 	resp := &ProductListItemResponse{
-//         ID: object.ID,
-//         Name: object.Name,
-//         Description: object.Description,
-//         OrganizationID: object.OrganizationID,
-//     }
-// 	return resp
-// }
-//
-// func (rd *ProductListItemResponse) Render(w http.ResponseWriter, r *http.Request) error {
-// 	// Pre-processing before a response is marshalled and sent across the wire
-// 	return nil
-// }
-//
-// // Constructor creates a JSON response payload from the array of Product
-// // model data objects.
-// func NewProductListResponse(products []model.Product) []render.Renderer {
-// 	list := []render.Renderer{}
-// 	for _, product := range products {
-// 		list = append(list, NewProductListItemResponse(&product))
-// 	}
-// 	return list
-// }
+//----------------------------------------------------------------------------//
+//                                  LIST                                      //
+//----------------------------------------------------------------------------//
+
+
+// Individual product list response payload.
+type ProductListItemResponse struct {
+    ID                  uint64 `json:"id,omitempty" form:"int"`
+    Name                string `json:"name,omitempty"`
+    OrganizationID      uint64 `json:"organization_id,omitempty" form:"int"`
+    StoreID             uint64 `json:"store_id,omitempty" form:"int"`
+}
+
+// Constructor creates a ProductListItemResponse payload from the
+// Product model data.
+func NewProductListItemResponse(object *model.Product) *ProductListItemResponse {
+	resp := &ProductListItemResponse{
+        ID: object.ID,
+        Name: object.Name,
+        OrganizationID: object.OrganizationID,
+        StoreID: object.StoreID,
+    }
+	return resp
+}
+
+func (rd *ProductListItemResponse) Render(w http.ResponseWriter, r *http.Request) error {
+	// Pre-processing before a response is marshalled and sent across the wire
+	return nil
+}
+
+// Constructor creates a JSON response payload from the array of Product
+// model data objects.
+func NewProductListResponse(products []model.Product) []render.Renderer {
+	list := []render.Renderer{}
+	for _, product := range products {
+		list = append(list, NewProductListItemResponse(&product))
+	}
+	return list
+}
