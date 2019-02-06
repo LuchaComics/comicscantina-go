@@ -18,6 +18,7 @@ type Organization struct {
     City                string `gorm:"size:127;"`
     Province            string `gorm:"size:127;"`
     Country             string `gorm:"size:127;"`
+    Postal              string `gorm:"size:31;"`
     Currency            string `gorm:"size:3;"`
     Language            string `gorm:"size:2;"`
     Website             string `gorm:"size:127;"`
