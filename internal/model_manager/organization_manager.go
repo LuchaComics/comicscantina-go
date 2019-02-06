@@ -83,7 +83,6 @@ func (manager *OrganizationManager) UserIsMemberOf(userID uint64, orgID uint64) 
     if count > 0 {
         return true
     }
-    fmt.Println("-B-")
 
     //--------------------------------------------------------------------------
     // CASE 2 OF 2: Is the user an EMPLOYEE of this Organization.

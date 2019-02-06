@@ -2,7 +2,6 @@ package controller
 
 import (
     "context"
-    "fmt"
     "net/http"
     "strconv"
     "github.com/go-chi/chi"
@@ -21,11 +20,22 @@ import (
 func ListStoresFunc(w http.ResponseWriter, r *http.Request) {
     // Extract from the context our URL parameter.
     pageIndex := r.Context().Value("pageIndex").(uint64)
+    user := r.Context().Value("user").(*model.User)
 
-    stores, _ := model_manager.StoreManagerInstance().AllByPageIndex(pageIndex)
-    fmt.Println(stores)
+    // Filter the Store model data based on the context of the user:
+    // (1) Owners have all their stores listed.
+    // (2) Employers have all their stores listed.
+    // (3) All stores listed if user is staff.
+    var stores []model.Store;
+    if user.OrganizationID != 0 {
+        stores, _ = model_manager.StoreManagerInstance().PaginatedFilterBy(user.OrganizationID, pageIndex)
+    } else if user.EmployerID != 0 {
+        stores, _ = model_manager.StoreManagerInstance().PaginatedFilterBy(user.EmployerID, pageIndex)
+    } else if user.GroupID == 2 {
+        stores, _ = model_manager.StoreManagerInstance().PaginatedAll(pageIndex)
+    }
 
-    // Iterate through each `Country` object and render our specific view.
+    // Iterate through each `Store` object and render our specific view.
     if err := render.RenderList(w, r, serializer.NewStoreListResponse(stores)); err != nil {
 		render.Render(w, r, serializer.ErrRender(err))
 		return

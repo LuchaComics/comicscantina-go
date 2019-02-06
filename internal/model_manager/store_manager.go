@@ -48,7 +48,7 @@ func (manager *StoreManager) GetByName(name string) (*model.Store, uint64) {
     return &org, count
 }
 
-func (manager *StoreManager) AllByPageIndex(pageIndex uint64) ([]model.Store, uint64) {
+func (manager *StoreManager) PaginatedAll(pageIndex uint64) ([]model.Store, uint64) {
     orm := manager.dao.GetORM() // Get our database layer.
 
     // Initial array to hold query results.
@@ -57,6 +57,29 @@ func (manager *StoreManager) AllByPageIndex(pageIndex uint64) ([]model.Store, ui
     // Where will find all records.
     orm.Where("id > ?", 0)
 
+    // Make our paginated query.
+    pagination := utils.Pagging(&utils.Param{
+		DB:      orm,
+		Page:    pageIndex,
+		Limit:   25,
+		OrderBy: []string{"id asc"},
+		ShowSQL: false,
+	}, &stores)
+
+    return stores, pagination.TotalRecord
+}
+
+func (manager *StoreManager) PaginatedFilterBy(orgID uint64, pageIndex uint64) ([]model.Store, uint64) {
+    orm := manager.dao.GetORM() // Get our database layer.
+
+    // Initial array to hold query results.
+    var stores []model.Store
+
+    // Filter by `organization_id`.
+    if orgID > 0 {
+        orm.Where("organization_id = ?", orgID)
+    }
+    
     // Make our paginated query.
     pagination := utils.Pagging(&utils.Param{
 		DB:      orm,
