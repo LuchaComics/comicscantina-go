@@ -702,18 +702,14 @@ It is important to note that if the *authenticated user* is staff member of [**L
   * **Content:**
 
     ```json
-    {
-        "city": "London",
-        "country": "Canada",
-        "description": "The company",
-        "email": "bart@mikasoftware.com",
-        "id": 1,
-        "name": "Mika Software",
-        "owner_id": 1,
-        "province": "Ontario",
-        "status": 1,
-        "street_address": "111-204 Infinite Loop Road"
-    }
+    [
+        {
+            "description": "The brick and morter comics store in downtown.",
+            "id": 1,
+            "name": "Downtown Main Store",
+            "organization_id": 1
+        }
+    ]
     ```
 
 
@@ -732,3 +728,62 @@ It is important to note that if the *authenticated user* is staff member of [**L
 ## Update Store
 
 **TODO: IMPLEMENT**
+
+
+## Create Product
+The API endpoint used to create a *Product* in Comics Cantina by an *authenticated user* belongoing to a specific *Store*.
+
+* **URL**
+
+  ``/api/v1/products``
+
+
+* **Method**
+
+  ``POST``
+
+
+* **URL Params**
+
+  None
+
+
+* **Data Params**
+
+  * name
+  * organization_id
+  * store_id
+
+
+* **Success Response**
+
+  * **Code:** 200
+  * **Content:**
+
+  ```json
+  TODO: IMPLEMENT
+  ```
+
+
+* **Error Response**
+
+  * **Code:** 400
+  * **Content:**
+
+    ```json
+    {
+      "error": "`organization_id` is invalid - either does not exist or you are not a member of it.",
+      "status": "Invalid request."
+    }
+    ```
+
+
+* **Sample Call**
+
+  ```bash
+  $ http post 127.0.0.1:8080/api/v1/products \
+    Authorization:"Bearer $COMICS_WS_API_TOKEN" \
+    name="Winterworld" \
+    organization_id=1 \
+    store_id=1
+  ```

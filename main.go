@@ -92,6 +92,7 @@ func main() {
 
 		// Product
 		//TODO: IMPLEMENT.
+		r.Post("/api/v1/products", controller.CreateProductFunc)
 
 		// Receipts
 		//TODO: IMPLEMENT.
