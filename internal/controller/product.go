@@ -4,7 +4,7 @@ import (
     "context"
     "net/http"
     "strconv"
-    // "github.com/go-chi/chi"
+    "github.com/go-chi/chi"
 	"github.com/go-chi/render"
     "github.com/luchacomics/comicscantina-go/internal/model"
 	"github.com/luchacomics/comicscantina-go/internal/model_manager"
@@ -35,38 +35,38 @@ func CreateProductFunc(w http.ResponseWriter, r *http.Request) {
 }
 
 
-// //----------------------------------------------------------------------------//
-// //                                 RETRIEVE                                   //
-// //----------------------------------------------------------------------------//
-//
-//
-// // Middleware will extract the `productID` parameter from the URL and
-// // attempt to lookup the Product model data object in the database. If
-// // the object was found then attach it to the context, else return an error.
-// func ProductCtx(next http.Handler) http.Handler {
-// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-// 		if productIDString := chi.URLParam(r, "productID"); productIDString != "" {
-// 			productID, _ := strconv.ParseUint(productIDString, 10, 64)
-// 			product, count := model_manager.ProductManagerInstance().GetByID(productID)
-//             if count == 1 {
-//                 ctx := context.WithValue(r.Context(), "product", product)
-//         		next.ServeHTTP(w, r.WithContext(ctx))
-//             }
-// 		}
-//         render.Render(w, r, serializer.ErrNotFound)
-//         return
-// 	})
-// }
-//
-//
-// func RetrieveProductFunc(w http.ResponseWriter, r *http.Request) {
-//     product := r.Context().Value("product").(*model.Product)
-//
-// 	if err := render.Render(w, r, serializer.NewProductResponse(product)); err != nil {
-// 		render.Render(w, r, serializer.ErrRender(err))
-// 		return
-// 	}
-// }
+//----------------------------------------------------------------------------//
+//                                 RETRIEVE                                   //
+//----------------------------------------------------------------------------//
+
+
+// Middleware will extract the `productID` parameter from the URL and
+// attempt to lookup the Product model data object in the database. If
+// the object was found then attach it to the context, else return an error.
+func ProductCtx(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if productIDString := chi.URLParam(r, "productID"); productIDString != "" {
+			productID, _ := strconv.ParseUint(productIDString, 10, 64)
+			product, count := model_manager.ProductManagerInstance().GetByID(productID)
+            if count == 1 {
+                ctx := context.WithValue(r.Context(), "product", product)
+        		next.ServeHTTP(w, r.WithContext(ctx))
+            }
+		}
+        render.Render(w, r, serializer.ErrNotFound)
+        return
+	})
+}
+
+
+func RetrieveProductFunc(w http.ResponseWriter, r *http.Request) {
+    product := r.Context().Value("product").(*model.Product)
+
+	if err := render.Render(w, r, serializer.NewProductResponse(product)); err != nil {
+		render.Render(w, r, serializer.ErrRender(err))
+		return
+	}
+}
 
 
 //----------------------------------------------------------------------------//

@@ -84,16 +84,19 @@ func main() {
 		r.With(cc_mw.PaginationCtx).With(cc_mw.StaffCtx).Get("/api/v1/organizations", controller.ListOrganizationsFunc)
 		r.Post("/api/v1/organizations", controller.CreateOrganizationFunc)
 		r.With(controller.OrganizationCtx).Get("/api/v1/organization/{organizationID}", controller.RetrieveOrganizationFunc)
+        //TODO: IMPLEMENT UPDATE API ENDPOINT
 
 		// Store
 		r.With(cc_mw.PaginationCtx).Get("/api/v1/stores", controller.ListStoresFunc)
 		r.Post("/api/v1/stores", controller.CreateStoreFunc)
 		r.With(controller.StoreCtx).Get("/api/v1/store/{storeID}", controller.RetrieveStoreFunc)
+		//TODO: IMPLEMENT UPDATE API ENDPOINT
 
 		// Product
 		r.With(cc_mw.PaginationCtx).With(controller.ProductFiltersCtx).Get("/api/v1/products", controller.ListProductsFunc)
 		r.Post("/api/v1/products", controller.CreateProductFunc)
-		//TODO: IMPLEMENT.
+		r.With(controller.ProductCtx).Get("/api/v1/product/{productID}", controller.RetrieveProductFunc)
+		//TODO: IMPLEMENT UPDATE API ENDPOINT
 
 		// Receipts
 		//TODO: IMPLEMENT.
