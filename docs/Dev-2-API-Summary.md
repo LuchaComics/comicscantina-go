@@ -27,6 +27,10 @@ Comics Cantina API Reference
 
 * /api/v1/supplier/<supplier_id>
 
+* /api/v1/shippers
+
+* /api/v1/shipper/<shipper_id>
+*
 * /api/v1/products
 
 * /api/v1/product/<product_id>

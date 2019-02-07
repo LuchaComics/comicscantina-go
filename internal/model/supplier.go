@@ -14,5 +14,5 @@ type Supplier struct {
 
 // Give custom table name in our database.
 func (u Supplier) TableName() string {
-    return "cc_supplier"
+    return "cc_suppliers"
 }

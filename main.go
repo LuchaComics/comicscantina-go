@@ -110,6 +110,12 @@ func main() {
 		r.With(controller.ProductCtx).Get("/api/v1/product/{productID}", controller.RetrieveProductFunc)
 		//TODO: IMPLEMENT UPDATE API ENDPOINT
 
+		// Shipper
+		r.With(cc_mw.PaginationCtx).Get("/api/v1/shippers", controller.ListShippersFunc)
+		r.Post("/api/v1/shippers", controller.CreateShipperFunc)
+		r.With(controller.ShipperCtx).Get("/api/v1/shipper/{shipperID}", controller.RetrieveShipperFunc)
+		//TODO: IMPLEMENT UPDATE API ENDPOINT
+
 	})
 
     //------------------------------------------------------------------------//
