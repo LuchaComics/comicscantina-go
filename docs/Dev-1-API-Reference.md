@@ -1055,11 +1055,11 @@ It is important to note that if the *authenticated user* is staff member of [**L
 
     ```json
     {
-        "id":1,
-        "name":"Sci-Fi",
-        "short_description":"Some short description.",
-        "long_description":"Long description.",
-        "organization_id":1
+        "id": 1,
+        "long_description": "Long description.",
+        "name": "Sci-Fi",
+        "organization_id": 1,
+        "short_description": "Some short description."
     }
     ```
 

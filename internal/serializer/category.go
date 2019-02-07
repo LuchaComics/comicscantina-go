@@ -21,7 +21,7 @@ type CategoryDetailRequest struct {
     Name              string `json:"name"; form:"string";`
     ShortDescription  string `json:"short_description"; form:"string";`
     LongDescription   string `json:"long_description"; form:"string";`
-    OrganizationID    uint64 `json:"organization_id,string,omitempty"`
+    OrganizationID    uint64 `json:"organization_id,string,omitempty"; form:"int"`
 }
 
 // Function will validate the input payload.
@@ -78,10 +78,10 @@ func (data *CategoryDetailRequest) Save(ctx context.Context) (*model.Category, e
 // CategoryResponse is the response payload for Category data model.
 type CategoryResponse struct {
     ID                uint64 `json:"id,omitempty" form:"int"`
-    Name              string `json:"name"; form:"string";`
-    ShortDescription  string `json:"short_description"; form:"string";`
-    LongDescription   string `json:"long_description"; form:"string";`
-    OrganizationID    uint64 `json:"organization_id,string,omitempty"`
+    Name              string `json:"name";`
+    ShortDescription  string `json:"short_description";`
+    LongDescription   string `json:"long_description";`
+    OrganizationID    uint64 `json:"organization_id,omitempty"; form:"int"`
 }
 
 // Function will create our output payload.
@@ -113,7 +113,7 @@ type CategoryListItemResponse struct {
     Name              string `json:"name"; form:"string";`
     ShortDescription  string `json:"short_description"; form:"string";`
     LongDescription   string `json:"long_description"; form:"string";`
-    OrganizationID    uint64 `json:"organization_id,string,omitempty"`
+    OrganizationID    uint64 `json:"organization_id,omitempty"; form:"int"`
 }
 
 // Constructor creates a CategoryListItemResponse payload from the

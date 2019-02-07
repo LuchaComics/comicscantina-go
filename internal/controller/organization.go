@@ -92,11 +92,13 @@ func OrganizationCtx(next http.Handler) http.Handler {
                 user := r.Context().Value("user").(*model.User)
                 if organization.ID != user.OrganizationID && organization.ID != user.EmployerID && user.GroupID != 2 {
                     render.Render(w, r, serializer.ErrNotFound)
+                    return
                 }
 
                 // Attach the organization to the context.
                 ctx := context.WithValue(r.Context(), "organization", organization)
         		next.ServeHTTP(w, r.WithContext(ctx))
+                return
             }
 		}
         render.Render(w, r, serializer.ErrNotFound)

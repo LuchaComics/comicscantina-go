@@ -51,6 +51,7 @@ func ProductCtx(next http.Handler) http.Handler {
             if count == 1 {
                 ctx := context.WithValue(r.Context(), "product", product)
         		next.ServeHTTP(w, r.WithContext(ctx))
+                return
             }
 		}
         render.Render(w, r, serializer.ErrNotFound)
