@@ -98,8 +98,11 @@ func main() {
 		r.With(controller.ProductCtx).Get("/api/v1/product/{productID}", controller.RetrieveProductFunc)
 		//TODO: IMPLEMENT UPDATE API ENDPOINT
 
-		// Receipts
-		//TODO: IMPLEMENT.
+		// Category
+		r.With(cc_mw.PaginationCtx).Get("/api/v1/categories", controller.ListCategoriesFunc)
+		r.Post("/api/v1/categories", controller.CreateCategoryFunc)
+		r.With(controller.CategoryCtx).Get("/api/v1/category/{categoryID}", controller.RetrieveCategoryFunc)
+		//TODO: IMPLEMENT UPDATE API ENDPOINT
 	})
 
     //------------------------------------------------------------------------//

@@ -903,3 +903,179 @@ It is important to note that if the *authenticated user* is staff member of [**L
 ## Update Product
 
 **TODO: IMPLEMENT**
+
+
+## Create Category
+The API endpoint used to create a *Category* in Comics Cantina by an *authenticated user* belongoing to a specific *Store*.
+
+* **URL**
+
+  ``/api/v1/categories``
+
+
+* **Method**
+
+  ``POST``
+
+
+* **URL Params**
+
+  None
+
+
+* **Data Params**
+
+  None
+
+
+* **Success Response**
+
+  * **Code:** 200
+  * **Content:**
+
+  ```json
+  TODO: IMPLEMENT
+  ```
+
+
+* **Error Response**
+
+  * **Code:** 400
+  * **Content:**
+
+    ```json
+    {
+        "error": "`organization_id` is invalid - either does not exist or you are not a member of it.",
+        "status": "Invalid request."
+    }
+    ```
+
+
+* **Sample Call**
+
+  ```bash
+  $ http post 127.0.0.1:8080/api/v1/categories \
+    Authorization:"Bearer $COMICS_WS_API_TOKEN" \
+    name="Sci-Fi" \
+    short_description="Some short description." \
+    long_description="Long description." \
+    organization_id=1
+  ```
+
+
+## List Categories
+Returns paginated list of all the *categories* that meet any of these criteria for the *authenticated user* that made the call:
+
+  * *user* is the owner of the *organization*
+  * *user* is an employee of the *organization*
+
+It is important to note that if the *authenticated user* is staff member of [**Lucha Comics** ](https://luchacomics.com/) then all *organizations* get listed regardless of membership or status.
+
+* **URL**
+
+  ``/api/v1/categories``
+
+
+* **Method**
+
+  ``GET``
+
+
+* **URL Params**
+
+  * page
+
+
+* **Data Params**
+
+  None
+
+
+* **Success Response**
+
+  * **Code:** 200
+  * **Content:**
+
+    ```json
+    [
+        {
+            "id": 2,
+            "long_description": "Long description.",
+            "name": "Sci-Fi",
+            "short_description": "Some short description."
+        }
+    ]
+    ```
+
+
+* **Error Response**
+
+  * None
+
+
+* **Sample Call**
+
+  ```bash
+  $ http get 127.0.0.1:8080/api/v1/categories Authorization:"Bearer $COMICS_WS_API_TOKEN"
+  ```
+
+
+## Retrieve Category
+Returns the *category* details. Only *authenticated users* which meet the following criteria are allowed to access this endpoint:
+
+  * *user* is the owner of the *organization*
+  * *user* is an employee of the *organization*
+
+It is important to note that if the *authenticated user* is staff member of [**Lucha Comics** ](https://luchacomics.com/) then they are automatically granted access.
+
+* **URL**
+
+  ``/api/v1/category/<category_id>``
+
+
+* **Method**
+
+  ``GET``
+
+
+* **URL Params**
+
+  None
+
+
+* **Data Params**
+
+  None
+
+
+* **Success Response**
+
+  * **Code:** 200
+  * **Content:**
+
+    ```json
+    {
+        "id":1,
+        "name":"Sci-Fi",
+        "short_description":"Some short description.",
+        "long_description":"Long description.",
+        "organization_id":1
+    }
+    ```
+
+
+* **Error Response**
+
+  * None
+
+
+* **Sample Call**
+
+  ```bash
+  $ http get 127.0.0.1:8080/api/v1/category/1 Authorization:"Bearer $COMICS_WS_API_TOKEN"
+  ```
+
+
+## Update Category
+
+**TODO: IMPLEMENT**

@@ -10,8 +10,8 @@ type Category struct {
     Name                string `gorm:"not null; size:255;"`
     ShortDescription    string `gorm:"type:varchar(127)"`
     LongDescription     string `gorm:"type:text"`
-    // Picture
-    IsActive            bool
+    Organization        Organization `gorm:"foreignkey:OrganizationID"` // Model
+    OrganizationID      uint64 `gorm:"index;"`
 }
 
 // Give custom table name in our database.
