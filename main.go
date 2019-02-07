@@ -92,17 +92,24 @@ func main() {
 		r.With(controller.StoreCtx).Get("/api/v1/store/{storeID}", controller.RetrieveStoreFunc)
 		//TODO: IMPLEMENT UPDATE API ENDPOINT
 
+		// Category
+		r.With(cc_mw.PaginationCtx).Get("/api/v1/categories", controller.ListCategoriesFunc)
+		r.Post("/api/v1/categories", controller.CreateCategoryFunc)
+		r.With(controller.CategoryCtx).Get("/api/v1/category/{categoryID}", controller.RetrieveCategoryFunc)
+		//TODO: IMPLEMENT UPDATE API ENDPOINT
+
+		// Supplier
+		r.With(cc_mw.PaginationCtx).Get("/api/v1/suppliers", controller.ListSuppliersFunc)
+		r.Post("/api/v1/suppliers", controller.CreateSupplierFunc)
+		r.With(controller.SupplierCtx).Get("/api/v1/supplier/{supplierID}", controller.RetrieveSupplierFunc)
+		//TODO: IMPLEMENT UPDATE API ENDPOINT
+
 		// Product
 		r.With(cc_mw.PaginationCtx).With(controller.ProductFiltersCtx).Get("/api/v1/products", controller.ListProductsFunc)
 		r.Post("/api/v1/products", controller.CreateProductFunc)
 		r.With(controller.ProductCtx).Get("/api/v1/product/{productID}", controller.RetrieveProductFunc)
 		//TODO: IMPLEMENT UPDATE API ENDPOINT
 
-		// Category
-		r.With(cc_mw.PaginationCtx).Get("/api/v1/categories", controller.ListCategoriesFunc)
-		r.Post("/api/v1/categories", controller.CreateCategoryFunc)
-		r.With(controller.CategoryCtx).Get("/api/v1/category/{categoryID}", controller.RetrieveCategoryFunc)
-		//TODO: IMPLEMENT UPDATE API ENDPOINT
 	})
 
     //------------------------------------------------------------------------//
